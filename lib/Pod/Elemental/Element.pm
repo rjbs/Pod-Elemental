@@ -36,7 +36,7 @@ sub as_string {
   my @para;
 
   if ($self->type eq 'command') {
-    push @para, sprintf '=%s %s', $self->command, $self->content;
+    push @para, sprintf "=%s %s\n", $self->command, $self->content;
     if ($self->children->length) {
       push @para, $self->children->map(sub { $_->as_string })->flatten;
     }
@@ -44,7 +44,7 @@ sub as_string {
     push @para, "=back\n" if $self->command eq 'over';
     push @para, ('=end ' . $self->content) if $self->command eq 'begin';
   } else {
-    push @para, $self->content;
+    push @para, $self->content . "\n";
   }
 
   return join "\n", @para;

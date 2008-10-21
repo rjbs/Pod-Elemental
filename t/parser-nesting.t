@@ -2,60 +2,68 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 use Test::Deep;
-use Pod::Weaver::Parser::Nesting;
+use Pod::Eventual::Simple;
+use Pod::Elemental::Objectifier;
+use Pod::Elemental::Nester;
 
-my $chunks = Pod::Weaver::Parser::Nesting->read_file('t/eg/Simple.pm');
+my $events   = Pod::Eventual::Simple->read_file('t/eg/Simple.pm');
+my $elements = Pod::Elemental::Objectifier->objectify_events($events);
+
+Pod::Elemental::Nester->nest_elements($elements);
+
 my $want = [
   {
     cmd('head1'),
-    content  => "DESCRIPTION\n",
-    children => [ { txt( re(qr{^This is .+ that\?\n}) ) } ],
+    content  => "DESCRIPTION",
+    children => [ { txt( re(qr{^This is .+ that\?}) ) } ],
   },
 
   {
     cmd('synopsis'),
-    content  => "\n",
+    content  => "",
     children => [ { type => 'verbatim', content => re(qr{^  use Test.+;$}) } ]
   },
 
   {
     cmd('head2'),
-    content => "Free Radical\n",
+    content => "Free Radical",
     children => [
       {
         cmd('head3'),
-        content => "Subsumed Radical\n",
+        content => "Subsumed Radical",
         children => [
           {
             cmd('over'),
-            content => "4\n",
-            children => [ { cmd('item'), content => re(qr{^\* nom.+st\n}) } ],
+            content => "4",
+            children => [ { cmd('item'), content => re(qr{^\* nom.+st}) } ],
   }, ], } ], },
 
   {
     cmd('method'),
-    content => "none\n",
-    children => [ { txt("Nope, there are no methods.\n") } ],
+    content => "none",
+    children => [ { txt("Nope, there are no methods.") } ],
   },
 
   {
     cmd('attr'),
-    content  => "also_none\n",
-    children => [ { txt("None of these, either.\n") } ],
+    content  => "also_none",
+    children => [ { txt("None of these, either.") } ],
   },
 
   {
     cmd('method'),
-    content  => "i_lied\n",
-    children => [ { txt("Ha!  Gotcha!\n") } ],
+    content  => "i_lied",
+    children => [ { txt("Ha!  Gotcha!") } ],
   },
 ];
 
 cmp_deeply(
-  [ map {$_->as_hash} @$chunks ],
+  [ map {$_->as_hash} @$elements ],
   $want,
   "we get the right chunky content we wanted",
 );
+
+warn join "\n", map { $_->as_string } @$elements;
 
 sub cmd { return(type => 'command', command => $_[0]) }
 sub txt { return(type => 'text',    content => $_[0]) }

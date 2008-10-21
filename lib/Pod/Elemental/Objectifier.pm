@@ -8,7 +8,17 @@ sub objectify_events {
   my ($self, $events) = @_;
   return $events->map(sub {
     return unless ref; # in the future, we will return nonpod elements
-    Pod::Elemental::Element->new($_)
+    my %guts = (
+      type       => $_->{type},
+      content    => $_->{content},
+      start_line => $_->{start_line},
+
+      ($_->{command} ? (command => $_->{command}) : ()),
+    );
+
+    chomp for values %guts;
+      
+    Pod::Elemental::Element->new(\%guts);
   });
 }
 

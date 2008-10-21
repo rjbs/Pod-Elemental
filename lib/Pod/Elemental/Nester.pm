@@ -2,6 +2,8 @@ package Pod::Elemental::Nester;
 use Moose;
 use Moose::Autobox;
 
+use Pod::Elemental::Element;
+
 my %RANK = do {
   my $i = 0;
   map { $_ => $i++ } qw(head1 head2 head3 head4 over item begin for);
@@ -21,7 +23,7 @@ sub rank_for {
 sub nest_elements {
   my ($self, $elements) = @_;
 
-  my $top = Pod::Weaver::PodChunk->new({
+  my $top = Pod::Elemental::Element->new({
     type     => 'command',
     command  => 'pod',
     content  => "\n",
@@ -108,7 +110,8 @@ sub nest_elements {
     @stack->push($element);
   }
 
-  return scalar $top->children;
+  @$elements = $top->children->flatten;
+  return $elements;
 }
 
 __PACKAGE__->meta->make_immutable;
