@@ -1,5 +1,5 @@
 use strict;
-package Test::Example::Pod;
+package Simple;
 # ABSTRACT: this is just a test
 
 =head1 DESCRIPTION
