@@ -2,41 +2,46 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 use Test::Deep;
-use Pod::Weaver::Parser::Nesting;
+use Pod::Eventual::Simple;
+use Pod::Elemental::Objectifier;
+use Pod::Elemental::Nester;
 
-my $chunks = Pod::Weaver::Parser::Nesting->read_file('t/eg/nested-begin.pod');
+my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-begin.pod');
+my $elements = Pod::Elemental::Objectifier->objectify_events($events);
+
+Pod::Elemental::Nester->nest_elements($elements);
 
 my $want = [
   {
     cmd('head1'),
-    content  => "DESCRIPTION\n",
+    content  => "DESCRIPTION",
     children => [
-      { txt("Foo.\n") },
+      { txt("Foo.") },
       {
         cmd('begin'),
-        content  => "outer\n",
+        content  => "outer",
         children => [
           {
             cmd('begin'),
-            content  => "inner\n",
+            content  => "inner",
             children => [
               {
                 cmd('head1'),
-                content  => "Inner!\n",
+                content  => "Inner!",
                 children => [
                   {
                     cmd('over'),
-                    content  => "\n",
-                    children => [ { cmd('item'), content => "* one\n" } ],
+                    content  => "",
+                    children => [ { cmd('item'), content => "* one" } ],
                   },
                   {
                     cmd('begin'),
-                    content => "inner\n",
-                    children => [ { cmd('head1'), content => "Another!\n" } ],
+                    content => "inner",
+                    children => [ { cmd('head1'), content => "Another!" } ],
                   },
                   {
                     cmd('head2'),
-                    content => "Welcome to my Second Head\n",
+                    content => "Welcome to my Second Head",
                   },
                 ],
               },
@@ -44,20 +49,22 @@ my $want = [
           },
           {
             cmd('head3'),
-            content => "Finalizing\n",
+            content => "Finalizing",
           },
         ],
       },
-      { txt("Baz.\n") },
+      { txt("Baz.") },
     ],
   },
 ];
 
 cmp_deeply(
-  [ map {$_->as_hash} @$chunks ],
+  [ map {$_->as_hash} @$elements ],
   $want,
   'nested =begins are not a problem'
 );
+
+# print join "\n", map { $_->as_debug_string } @$elements;
 
 sub cmd { return(type => 'command', command => $_[0]) }
 sub txt { return(type => 'text',    content => $_[0]) }

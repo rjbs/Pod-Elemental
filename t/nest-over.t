@@ -2,49 +2,54 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 use Test::Deep;
-use Pod::Weaver::Parser::Nesting;
+use Pod::Eventual::Simple;
+use Pod::Elemental::Objectifier;
+use Pod::Elemental::Nester;
 
-my $chunks = Pod::Weaver::Parser::Nesting->read_file('t/eg/nested-over.pod');
+my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-over.pod');
+my $elements = Pod::Elemental::Objectifier->objectify_events($events);
+
+Pod::Elemental::Nester->nest_elements($elements);
 
 my $want = [
   {
     cmd('head1'),
-    content  => "DESCRIPTION\n",
+    content  => "DESCRIPTION",
     children => [
-      { txt("Foo.\n") },
+      { txt("Foo.") },
       {
         cmd('over'),
-        content  => "\n",
+        content  => "",
         children => [
-          { cmd('item'), content => "* one\n" },
+          { cmd('item'), content => "* one" },
           {
             cmd('over'),
-            content  => "\n",
+            content  => "",
             children => [
-              { cmd('item'), content => "* oneone\n" },
-              { cmd('item'), content => "* twotwo\n" },
+              { cmd('item'), content => "* oneone" },
+              { cmd('item'), content => "* twotwo" },
             ]
           },
-          { cmd('item'), content => "* two\n" },
+          { cmd('item'), content => "* two" },
         ]
       },
 
       {
         cmd('head2'),
-        content  => "Sub-Description\n",
-        children => [ { txt("Bar.\n") } ],
+        content  => "Sub-Description",
+        children => [ { txt("Bar.") } ],
       },
     ],
   },
   {
     cmd('head1'),
-    content => "Final\n",
-    children => [ { txt("Baz.\n") } ],
+    content => "Final",
+    children => [ { txt("Baz.") } ],
   },
 ];
 
 cmp_deeply(
-  [ map {$_->as_hash} @$chunks ],
+  [ map {$_->as_hash} @$elements ],
   $want,
   'nested =over is not a problem'
 );
