@@ -3,6 +3,7 @@ use Moose;
 use Moose::Autobox;
 
 use Pod::Elemental::Element;
+use Pod::Elemental::Element::Command;
 
 my %RANK = do {
   my $i = 0;
@@ -23,7 +24,7 @@ sub rank_for {
 sub nest_elements {
   my ($self, $elements) = @_;
 
-  my $top = Pod::Elemental::Element->new({
+  my $top = Pod::Elemental::Element::Command->new({
     type     => 'command',
     command  => 'pod',
     content  => "\n",
