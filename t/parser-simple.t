@@ -2,9 +2,12 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 use Test::Deep;
-use Pod::Weaver::Parser::Simple;
+use Pod::Eventual::Simple;
+use Pod::Elemental::Objectifier;
 
-my $chunks = Pod::Weaver::Parser::Simple->read_file('t/eg/Simple.pm');
+my $events   = Pod::Eventual::Simple->read_file('t/eg/Simple.pm');
+my $elements = Pod::Elemental::Objectifier->objectify_events($events);
+
 my $want = [
   { type => 'command',  command => 'head1', content => "DESCRIPTION\n" },
   { type => 'text',     content => re(qr{^This is .+ that\?\n})     },
@@ -25,7 +28,7 @@ my $want = [
 ];
 
 cmp_deeply(
-  [ map {$_->as_hash} @$chunks ],
+  [ map { $_->as_hash } @$elements ],
   $want,
   "we get the right chunky content we wanted",
 );
