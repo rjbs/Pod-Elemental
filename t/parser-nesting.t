@@ -63,7 +63,5 @@ cmp_deeply(
   "we get the right chunky content we wanted",
 );
 
-warn join "\n", map { $_->as_string } @$elements;
-
 sub cmd { return(type => 'command', command => $_[0]) }
 sub txt { return(type => 'text',    content => $_[0]) }
