@@ -1,6 +1,7 @@
 package Pod::Elemental::Element::Text;
 use Moose;
 extends 'Pod::Elemental::Element';
+# ABSTRACT: a POD text or verbatim element
 
 use Moose::Autobox;
 

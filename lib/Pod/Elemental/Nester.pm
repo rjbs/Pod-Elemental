@@ -1,6 +1,7 @@
 package Pod::Elemental::Nester;
 use Moose;
 use Moose::Autobox;
+# ABSTRACT: it organizes a sequence of elements into a tree
 
 use Pod::Elemental::Element;
 use Pod::Elemental::Element::Command;

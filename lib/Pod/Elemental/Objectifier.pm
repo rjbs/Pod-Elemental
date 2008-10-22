@@ -1,6 +1,7 @@
 package Pod::Elemental::Objectifier;
 use Moose;
 use Moose::Autobox;
+# ABSTRACT: it turns a Pod::Eventual event stream into objects
 
 use Pod::Elemental::Element::Command;
 use Pod::Elemental::Element::Nonpod;

@@ -1,6 +1,7 @@
 package Pod::Elemental;
 use Moose;
 use Moose::Autobox;
+# ABSTRACT: work with nestable POD elements
 
 use Mixin::Linewise::Readers -readers;
 use Pod::Elemental::Element;

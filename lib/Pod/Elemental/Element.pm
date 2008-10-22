@@ -1,6 +1,7 @@
 package Pod::Elemental::Element;
 use Moose;
 use Moose::Autobox;
+# ABSTRACT: a POD element
 
 has type       => (is => 'ro', isa => 'Str', required => 1);
 has content    => (is => 'ro', isa => 'Str', required => 1);

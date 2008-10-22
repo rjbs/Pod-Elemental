@@ -1,6 +1,7 @@
 package Pod::Elemental::Element::Command;
 use Moose;
 extends 'Pod::Elemental::Element';
+# ABSTRACT: a POD =command element
 
 use Moose::Autobox;
 

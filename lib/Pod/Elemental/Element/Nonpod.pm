@@ -1,6 +1,7 @@
 package Pod::Elemental::Element::Nonpod;
 use Moose;
 extends 'Pod::Elemental::Element';
+# ABSTRACT: a non-pod element in a POD document
 
 use Moose::Autobox;
 
