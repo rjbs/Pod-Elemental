@@ -81,13 +81,16 @@ sub nest_elements {
 
     if ($element->command eq 'back') {
       pop @stack until !@stack or $stack[-1]->command eq 'over';
-      Carp::croak "encountered =back without =over" unless @stack;
+      Carp::croak sprintf "found =back without =over at line %s",
+        $element->start_line
+        unless @stack;
       pop @stack; # we want to be outside of the 
       next EVENT;
     }
 
     if ($element->command eq 'end') {
-      Carp::croak "encountered =end outside matching =begin";
+      Carp::croak sprintf "found =end outside matching =begin at line %s",
+        $element->start_line;
     }
 
     pop @stack until @stack == 1 or defined $self->rank_for($stack[-1]);
