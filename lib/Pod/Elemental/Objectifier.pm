@@ -2,20 +2,22 @@ package Pod::Elemental::Objectifier;
 use Moose;
 use Moose::Autobox;
 
-use Pod::Elemental::Element::Text;
 use Pod::Elemental::Element::Command;
+use Pod::Elemental::Element::Nonpod;
+use Pod::Elemental::Element::Text;
 
 sub element_class_for_event_type {
   my ($self, $t) = @_;
   return 'Pod::Elemental::Element::Command' if $t eq 'command';
   return 'Pod::Elemental::Element::Text' if $t eq 'verbatim' or $t eq 'text';
+  return 'Pod::Elemental::Element::Nonpod' if $t eq 'nonpod';
   Carp::croak "unknown event type: $t";
 }
 
 sub objectify_events {
   my ($self, $events) = @_;
   return $events->map(sub {
-    return unless ref; # in the future, we will return nonpod elements
+    Carp::croak("not a valid event") unless ref $_;
 
     my $class = $self->element_class_for_event_type($_->{type});
 

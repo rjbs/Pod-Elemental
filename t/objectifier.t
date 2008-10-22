@@ -2,6 +2,8 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 use Test::Deep;
+
+use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental::Objectifier;
 
@@ -28,7 +30,7 @@ my $want = [
 ];
 
 cmp_deeply(
-  [ map { $_->as_hash } @$elements ],
+  $elements->grep(sub { $_->{type} ne 'nonpod' })->map(sub { $_->as_hash }),
   $want,
   "we get the right chunky content we wanted",
 );

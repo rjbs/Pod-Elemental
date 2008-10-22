@@ -2,11 +2,14 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 use Test::Deep;
+
+use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental::Objectifier;
 use Pod::Elemental::Nester;
 
-my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-over.pod');
+my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-over.pod')
+               ->grep(sub { $_->{type} ne 'nonpod' });
 my $elements = Pod::Elemental::Objectifier->objectify_events($events);
 
 Pod::Elemental::Nester->nest_elements($elements);
