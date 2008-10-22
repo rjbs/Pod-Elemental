@@ -1,7 +1,9 @@
 package Pod::Elemental;
 use Moose;
+use Moose::Autobox;
 
 use Mixin::Linewise::Readers -readers;
+use Pod::Elemental::Element;
 use Pod::Elemental::Nester;
 use Pod::Elemental::Objectifier;
 use Pod::Eventual::Simple;
@@ -28,7 +30,8 @@ sub read_handle {
   my ($self, $handle) = @_;
   $self = $self->new unless ref $self;
 
-  my $events   = $self->event_reader->read_handle($handle);
+  my $events   = $self->event_reader->read_handle($handle)
+                 ->grep(sub { $_->{type} ne 'nonpod' });
   my $elements = $self->objectifier->objectify_events($events);
   $self->nester->nest_elements($elements);
 

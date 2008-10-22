@@ -6,7 +6,7 @@ use Moose::Autobox;
 
 has children => (
   is   => 'ro',
-  isa  => 'ArrayRef[Pod::Weaver::PodChunk]',
+  isa  => 'ArrayRef[Pod::Elemental::Element]',
   auto_deref => 1,
   required   => 1,
   default    => sub { [] },
