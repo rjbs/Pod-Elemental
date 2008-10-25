@@ -5,6 +5,8 @@ extends 'Pod::Elemental::Element';
 
 use Moose::Autobox;
 
+has '+type' => (default => 'text');
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 1;

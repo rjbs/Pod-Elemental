@@ -5,38 +5,11 @@ extends 'Pod::Elemental::Element';
 
 use Moose::Autobox;
 
-sub as_string {
-  my ($self) = @_;
-
-  my @para;
-
-  push @para, sprintf "=%s %s\n", $self->command, $self->content;
-  if ($self->children->length) {
-    push @para, $self->children->map(sub { $_->as_string })->flatten;
-  }
-
-  push @para, "=back\n" if $self->command eq 'over';
-  push @para, ('=end ' . $self->content . "\n") if $self->command eq 'begin';
-
-  return join "\n", @para;
-}
+has '+type' => (default => 'nonpod');
 
 sub as_debug_string {
-  my ($self) = @_;
-
-  my @para;
-
-  push @para, sprintf "=%s %s\n", $self->command, $self->content;
-  if ($self->children->length) {
-    my @sub = $self->children->map(sub { $_->as_debug_string })->flatten;
-    s/^/  /gm for @sub;
-    push @para, @sub;
-  }
-
-  push @para, "=back\n" if $self->command eq 'over';
-  push @para, ('=end ' . $self->content . "\n") if $self->command eq 'begin';
-
-  return join "", @para;
+  # TODO: include first line or so of content -- rjbs, 2008-10-25
+  return "(non-POD)\n";
 }
 
 __PACKAGE__->meta->make_immutable;

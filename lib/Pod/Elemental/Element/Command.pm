@@ -5,6 +5,24 @@ extends 'Pod::Elemental::Element';
 
 use Moose::Autobox;
 
+has '+type' => (default => 'command');
+
+=attr command
+
+This attribute contains the name of the command, like C<head1> or C<encoding>.
+
+=cut
+
+has command => (is => 'ro', isa => 'Str', required => 0);
+
+=attr children
+
+This attribute is an arrayref of
+L<Pod::Elemental::Element|Pod::Elemental::Element> objects, and represents
+elements contained by this node.
+
+=cut
+
 has children => (
   is   => 'ro',
   isa  => 'ArrayRef[Pod::Elemental::Element]',

@@ -3,10 +3,37 @@ use Moose;
 use Moose::Autobox;
 # ABSTRACT: a POD element
 
+=attr type
+
+The type is a string giving a type for the element, like F<text> or F<nonpod>
+or F<command>.  These are generally the same as the event types from the event
+reader.
+
+=attr content
+
+This is the textual content of the element, as in a Pod::Eventual event, but
+has its trailing newline chomped.  In other words, this POD:
+
+  =head2 content
+
+has a content of "content"
+
+=attr start_line
+
+This attribute, which may or may not be set, indicates the line in the source
+document where the element began.
+
+=cut
+
 has type       => (is => 'ro', isa => 'Str', required => 1);
 has content    => (is => 'ro', isa => 'Str', required => 1);
-has command    => (is => 'ro', isa => 'Str', required => 0);
 has start_line => (is => 'ro', isa => 'Int', required => 0);
+
+=method as_hash
+
+This returns a hashref describing the object.
+
+=cut
 
 sub as_hash {
   my ($self) = @_;
@@ -17,10 +44,27 @@ sub as_hash {
   };
 }
 
+=method as_string
+
+This returns the element  as a string, suitable for turning elements back into
+a document.  Some elements, like a C<=over> command, will stringify to include
+extra content like a C<=back> command.  In the case of elements with children,
+this method will include the stringified children as well.
+
+=cut
+
 sub as_string {
   my ($self) = @_;
   return $self->content . "\n";
 }
+
+=method as_debug_string
+
+This method returns a string, like C<as_string>, but is meant for getting an
+overview of the document structure, and is not suitable for reproducing a
+document.  Its exact output is likely to change over time.
+
+=cut
 
 sub as_debug_string {
   my ($self) = @_;
