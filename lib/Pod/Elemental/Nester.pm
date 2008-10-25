@@ -33,6 +33,8 @@ Some elements may be dropped (like C<=cut> commands).
 
 =cut
 
+# TODO: handle the stupid verbatim-correction when inside non-colon-begin
+
 sub nest_elements {
   my ($self, $elements) = @_;
 
