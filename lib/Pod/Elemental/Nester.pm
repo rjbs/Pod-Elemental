@@ -93,6 +93,23 @@ sub nest_elements {
       next EVENT;
     }
 
+    if ($element->command eq 'for') {
+      my ($target, $content) = $element->content =~ /\A(\S+)\s+(.+)\z/;
+      $stack[-1]->children->push(
+        Pod::Elemental::Element::Command->new({
+          command  => 'begin',
+          content  => $target,
+          children => [
+            Pod::Elemental::Element::Text->new({
+              type    => 'text',
+              content => $content,
+            }),
+          ],
+        }),
+      );
+      next EVENT;
+    }
+
     if ($element->command eq 'back') {
       pop @stack until !@stack or $stack[-1]->command eq 'over';
       Carp::croak sprintf "found =back without =over at line %s",
