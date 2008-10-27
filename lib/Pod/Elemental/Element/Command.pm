@@ -1,6 +1,7 @@
 package Pod::Elemental::Element::Command;
 use Moose;
 extends 'Pod::Elemental::Element';
+with 'Pod::Elemental::Role::Children';
 # ABSTRACT: a POD =command element
 
 use Moose::Autobox;
@@ -14,22 +15,6 @@ This attribute contains the name of the command, like C<head1> or C<encoding>.
 =cut
 
 has command => (is => 'ro', isa => 'Str', required => 0);
-
-=attr children
-
-This attribute is an arrayref of
-L<Pod::Elemental::Element|Pod::Elemental::Element> objects, and represents
-elements contained by this node.
-
-=cut
-
-has children => (
-  is   => 'ro',
-  isa  => 'ArrayRef[Pod::Elemental::Element]',
-  auto_deref => 1,
-  required   => 1,
-  default    => sub { [] },
-);
 
 sub as_hash {
   my ($self) = @_;
