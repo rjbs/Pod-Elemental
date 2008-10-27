@@ -39,6 +39,14 @@ with a colon-prefixed target identifier:
 
 has is_pod => (is => 'ro', isa => 'Bool', required => 1, default => 1);
 
+=attr encoding
+
+This attribute, if set, indicates the encoding of the document.
+
+=cut
+
+has encoding => (is => 'rw', isa => 'Maybe[Str]');
+
 =method target_string
 
 This returns the target to be included in the pod output.  It is the C<target>
@@ -109,13 +117,18 @@ sub _xform_elements {
 
   my @new_elements;
 
-  # XXX: We're not recursing yet! -- rjbs, 2008-10-26
-  for my $element ($elements->flatten) {
+  ELEMENT: for my $element ($elements->flatten) {
     if ($element->type eq 'command') {
       if ($element->command eq 'for') {
         $element = $self->_from_for_element($element);
       } elsif ($element->command eq 'begin') {
         $element = $self->_from_begin_element($element);
+      } elsif ($element->command eq 'encoding') {
+        if (defined $self->encoding and $self->encoding ne $element->content) {
+          confess "found two conflicting encodings";
+        }
+        $self->encoding( $element->content );
+        next ELEMENT;
       } else {
         $self->_xform_elements( scalar $element->children );
       }
@@ -129,6 +142,17 @@ sub _xform_elements {
       $element = Pod::Elemental::Element::Data->new({
         content => $element->content,
       });
+    }
+
+    if (
+      $element->isa('Pod::Elemental::Document')
+      and defined $element->encoding
+    ) {
+      if (defined $self->encoding and $self->encoding ne $element->encoding) {
+        confess "found two conflicting encodings";
+      } elsif (not defined $self->encoding) {
+        $self->encoding( $element->encoding );
+      }
     }
 
     @new_elements->push($element);
