@@ -189,28 +189,44 @@ sub as_hash {
   return $hash;
 }
 
-sub as_string {
+sub _as_string {
   my ($self) = @_;
 
+  our $doc_str_state;
   my @para;
 
-  if ($self->command eq 'pod') {
+  unless ($doc_str_state->{in_pod}++) {
     push @para, "=pod\n";
-  } else {
+  }
+
+  if ($self->command ne 'pod') {
     push @para, sprintf "=%s %s\n", $self->command, $self->target_string;
   }
 
-  if ($self->children->length) {
-    push @para, $self->children->map(sub { $_->as_string })->flatten;
+  for my $child ($self->children) {
+    if ($child->isa('Pod::Elemental::Document')) {
+      push @para, $child->_as_string;
+    } else {
+      push @para, $child->as_string;
+    }
   }
 
-  if ($self->command eq 'pod') {
-    push @para, "=cut\n";
-  } else {
+  if ($self->command ne 'pod') {
     push @para, '=end ' . $self->target_string . "\n";
   }
 
+  unless (--$doc_str_state->{in_pod}) {
+    push @para, "=cut\n";
+  }
+
   return join "\n", @para;
+}
+
+sub as_string {
+  my ($self) = @_;
+  our $doc_str_state;
+  local $doc_str_state = {} unless defined $doc_str_state;
+  return $self->_as_string;
 }
 
 sub as_debug_string {
