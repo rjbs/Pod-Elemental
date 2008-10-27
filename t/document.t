@@ -12,66 +12,48 @@ use Pod::Elemental::Document;
 my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-begin.pod')
                ->grep(sub { $_->{type} ne 'nonpod' });
 my $elements = Pod::Elemental::Objectifier->objectify_events($events);
-my $document = Pod::Elemental::Document->new({ target => 'PantS' });
+my $document = Pod::Elemental::Document->new;
 
 Pod::Elemental::Nester->nest_elements($elements);
 
 $document->add_elements($elements);
 
-print explain $document->as_string;
+my $str = do { local $/; <DATA> };
+is($document->as_string, $str, 'we got what we expected');
 
-__END__
-my $want = [
-  {
-    cmd('head1'),
-    content  => "DESCRIPTION",
-    children => [ { txt( re(qr{^This is .+ that\?}) ) } ],
-  },
+__DATA__
+=pod
 
-  {
-    cmd('synopsis'),
-    content  => "",
-    children => [ { type => 'verbatim', content => re(qr{^  use Test.+;$}) } ]
-  },
+=head1 DESCRIPTION
 
-  {
-    cmd('head2'),
-    content => "Free Radical",
-    children => [
-      {
-        cmd('head3'),
-        content => "Subsumed Radical",
-        children => [
-          {
-            cmd('over'),
-            content => "4",
-            children => [ { cmd('item'), content => re(qr{^\* nom.+st}) } ],
-  }, ], } ], },
+Foo.
 
-  {
-    cmd('method'),
-    content => "none",
-    children => [ { txt("Nope, there are no methods.") } ],
-  },
+=begin outer
 
-  {
-    cmd('attr'),
-    content  => "also_none",
-    children => [ { txt("None of these, either.") } ],
-  },
+=begin inner
 
-  {
-    cmd('method'),
-    content  => "i_lied",
-    children => [ { txt("Ha!  Gotcha!") } ],
-  },
-];
+=head1 Inner!
 
-cmp_deeply(
-  [ map {$_->as_hash} @$elements ],
-  $want,
-  "we get the right chunky content we wanted",
-);
+=over 
 
-sub cmd { return(type => 'command', command => $_[0]) }
-sub txt { return(type => 'text',    content => $_[0]) }
+=item * one
+
+=back
+
+=begin inner
+
+=head1 Another!
+
+=end inner
+
+=head2 Welcome to my Second Head
+
+=end inner
+
+=head3 Finalizing
+
+=end outer
+
+Baz.
+
+=cut
