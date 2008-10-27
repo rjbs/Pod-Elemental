@@ -13,7 +13,7 @@ elements contained by an object.
 =cut
 
 has children => (
-  is   => 'ro',
+  is   => 'rw',
   isa  => 'ArrayRef[Pod::Elemental::Element]',
   auto_deref => 1,
   required   => 1,

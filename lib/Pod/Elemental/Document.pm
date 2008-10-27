@@ -17,7 +17,7 @@ L</is_pod>.)
 
 =cut
 
-subtype 'TargetString'
+subtype 'TargetStr'
   => as 'Str'
   => where { length $_ and /\A\S+\z/ };
 
@@ -37,7 +37,7 @@ with a colon-prefixed target identifier:
 
 =cut
 
-has is_pod => (is => 'ro', isa => 'Bool', required => 1, default => 0);
+has is_pod => (is => 'ro', isa => 'Bool', required => 1, default => 1);
 
 =method target_string
 
@@ -67,14 +67,14 @@ sub _parse_forbegin_target {
   return {
     is_pod => ($colon ? 1 : 0),
     target => $target,
-    (length $content ? (content => $content) : ()),
+    (defined $content ? (content => $content) : ()),
   };
 }
 
 sub _from_for_element {
   my ($self, $element) = @_;
 
-  my $attr = $self->_parse_forbegin_content($element->content);
+  my $attr = $self->_parse_forbegin_target($element->content);
 
   my $doc = Pod::Elemental::Document->new({
     is_pod => $attr->{is_pod},
@@ -92,18 +92,22 @@ sub _from_for_element {
 sub _from_begin_element {
   my ($self, $element) = @_;
 
-  my $attr = $self->_parse_forbegin_content($element->content);
+  my $attr = $self->_parse_forbegin_target($element->content);
 
   my $doc = Pod::Elemental::Document->new({
     is_pod => $attr->{is_pod},
     target => $attr->{target},
   });
 
-  $doc->add_elements($element->children);
+  $doc->add_elements(scalar $element->children);
+
+  return $doc;
 }
 
-sub add_elements {
+sub _xform_elements {
   my ($self, $elements) = @_;
+
+  my @new_elements;
 
   # XXX: We're not recursing yet! -- rjbs, 2008-10-26
   for my $element ($elements->flatten) {
@@ -112,25 +116,39 @@ sub add_elements {
         $element = $self->_from_for_element($element);
       } elsif ($element->command eq 'begin') {
         $element = $self->_from_begin_element($element);
+      } else {
+        $self->_xform_elements( scalar $element->children );
       }
     }
 
-    if (! $self->is_pod and $element->type eq [qw(text verbatim)]->any) {
+    if (
+      ! $self->is_pod
+      and $element->isa('Pod::Elemental::Element')
+      and $element->type eq [qw(text verbatim)]->any
+    ) {
       $element = Pod::Elemental::Element::Data->new({
         content => $element->content,
       });
     }
 
-    $self->children->push($element);
+    @new_elements->push($element);
   }
 
-  return $self;
+  @$elements = @new_elements;
+}
+
+sub add_elements {
+  my ($self, $elements) = @_;
+
+  $self->_xform_elements($elements);
+
+  $self->children->push(@$elements);
 }
 
 sub command {
   my ($self) = @_;
   return 'pod' unless defined $self->target;
-  return $self->target;
+  return 'begin';
 }
 
 sub as_hash {
