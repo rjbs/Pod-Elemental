@@ -4,6 +4,7 @@ use Moose::Autobox;
 # ABSTRACT: work with nestable POD elements
 
 use Mixin::Linewise::Readers -readers;
+use Pod::Elemental::Document;
 use Pod::Elemental::Element;
 use Pod::Elemental::Nester;
 use Pod::Elemental::Objectifier;
@@ -47,9 +48,21 @@ a tree.
 =cut
 
 has nester => (
-  is => 'ro',
+  is       => 'ro',
   required => 1,
   default  => sub { return Pod::Elemental::Nester->new },
+);
+
+=attr document_class
+
+This is the class for documents created by reading pod.
+
+=cut
+
+has document_class => (
+  is       => 'ro',
+  required => 1,
+  default  => 'Pod::Elemental::Document',
 );
 
 =method read_handle
@@ -58,8 +71,7 @@ has nester => (
 
 =method read_string
 
-These methods read the given input and return an arrayref of the elements that
-form the top of element trees describing the document.
+These methods read the given input and return a Pod::Elemental::Document.
 
 =cut
 
@@ -67,12 +79,14 @@ sub read_handle {
   my ($self, $handle) = @_;
   $self = $self->new unless ref $self;
 
-  my $events   = $self->event_reader->read_handle($handle)
-                 ->grep(sub { $_->{type} ne 'nonpod' });
+  my $events   = $self->event_reader->read_handle($handle);
   my $elements = $self->objectifier->objectify_events($events);
   $self->nester->nest_elements($elements);
 
-  return $elements;
+  my $document = $self->document_class->new;
+  $document->add_elements($elements);
+
+  return $document;
 }
 
 __PACKAGE__->meta->make_immutable;

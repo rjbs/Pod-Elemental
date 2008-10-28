@@ -47,8 +47,6 @@ sub nest_elements {
   my @stack  = $top;
 
   EVENT: while (my $element = $elements->shift) {
-    Carp::croak("can't nest nonpod element") if $element->type eq 'nonpod';
-
     # =cut?  Where we're going, we don't need =cut. -- rjbs, 2015-11-05
     next if $element->type eq 'command' and $element->command eq 'cut';
 
