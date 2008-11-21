@@ -8,4 +8,5 @@ use Pod::Elemental;
 
 my $document = Pod::Elemental->read_file('t/eg/one-with-everything.pod');
 
-print $document->as_string;
+# print $document->as_string;
+ok(1);
