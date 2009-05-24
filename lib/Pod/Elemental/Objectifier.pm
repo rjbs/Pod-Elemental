@@ -35,6 +35,7 @@ sub objectify_events {
   my ($self, $events) = @_;
   return $events->map(sub {
     Carp::croak("not a valid event") unless ref $_;
+    return if $_->{type} eq 'blank';
 
     my $class = $self->element_class_for_event($_);
 
