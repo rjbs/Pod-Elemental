@@ -1,4 +1,7 @@
-Revision history for Pod-Elemental
+Revision history for {{$dist->name}}
+
+{{$NEXT}}
+          temporary workaround for new Pod::Eventual's "blank" events
 
 0.003     2009-01-31
           experimental Document class

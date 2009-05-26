@@ -17,8 +17,8 @@ sub element_class_for_event {
   my ($self, $event) = @_;
   my $t = $event->{type};
   return 'Pod::Elemental::Element::Command' if $t eq 'command';
-  return 'Pod::Elemental::Element::Text' if $t eq 'verbatim' or $t eq 'text';
-  return 'Pod::Elemental::Element::Nonpod' if $t eq 'nonpod';
+  return 'Pod::Elemental::Element::Text'    if $t eq 'verbatim' or $t eq 'text';
+  return 'Pod::Elemental::Element::Nonpod'  if $t eq 'nonpod';
   Carp::croak "unknown event type: $t";
 }
 
