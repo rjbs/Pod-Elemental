@@ -1,7 +1,12 @@
-package Pod::Elemental::Element;
-use Moose;
+package Pod::Elemental::Paragraph;
+use namespace::autoclean;
+use Moose::Role;
 use Moose::Autobox;
-# ABSTRACT: a POD element
+# ABSTRACT: a paragraph in a Pod document
+
+with 'Pod::Elemental::Node';
+
+requires 'type';
 
 =attr type
 
@@ -25,26 +30,10 @@ document where the element began.
 
 =cut
 
-has type       => (is => 'ro', isa => 'Str', required => 1);
 has content    => (is => 'ro', isa => 'Str', required => 1);
 has start_line => (is => 'ro', isa => 'Int', required => 0);
 
-=method as_hash
-
-This returns a hashref describing the object.
-
-=cut
-
-sub as_hash {
-  my ($self) = @_;
-
-  return {
-    type    => $self->type,
-    content => $self->content,
-  };
-}
-
-=method as_string
+=method as_pod_string
 
 This returns the element  as a string, suitable for turning elements back into
 a document.  Some elements, like a C<=over> command, will stringify to include
@@ -53,7 +42,7 @@ this method will include the stringified children as well.
 
 =cut
 
-sub as_string {
+sub as_pod_string {
   my ($self) = @_;
   return $self->content . "\n";
 }

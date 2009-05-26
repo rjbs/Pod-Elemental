@@ -9,6 +9,9 @@ use MooseX::Types;
 use MooseX::Types::Moose qw(ArrayRef);
 use Moose::Util::TypeConstraints qw(class_type);
 
+requires 'as_pod_string';
+requires 'as_debug_string';
+
 =attr children
 
 This attribute is an arrayref of
