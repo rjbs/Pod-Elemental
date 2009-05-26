@@ -1,8 +1,13 @@
-package Pod::Elemental::Role::Children;
+package Pod::Elemental::Node;
 use Moose::Role;
-# ABSTRACT: a thing with Pod::Elemental::Elements as children
+# ABSTRACT: a thing with Pod::Elemental::Nodes as children
+
+use namespace::autoclean;
 
 use Moose::Autobox;
+use MooseX::Types;
+use MooseX::Types::Moose qw(ArrayRef);
+use Moose::Util::TypeConstraints qw(class_type);
 
 =attr children
 
@@ -14,7 +19,7 @@ elements contained by an object.
 
 has children => (
   is   => 'rw',
-  isa  => 'ArrayRef[Pod::Elemental::Element]',
+  isa  => ArrayRef[ role_type('Pod::Elemental::Element') ],
   auto_deref => 1,
   required   => 1,
   default    => sub { [] },
