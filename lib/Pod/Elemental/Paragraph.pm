@@ -52,6 +52,4 @@ sub as_debug_string {
   return $self->as_string;
 }
 
-__PACKAGE__->meta->make_immutable;
-no Moose;
 1;

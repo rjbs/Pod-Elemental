@@ -1,6 +1,5 @@
 package Pod::Elemental::Element::Command;
 use Moose;
-with 'Pod::Elemental::Command';
 # ABSTRACT: a POD =command element
 
 use namespace::autoclean;
@@ -20,5 +19,7 @@ has command => (
   isa => 'Str',
   required => 1,
 );
+
+with 'Pod::Elemental::Command';
 
 1;
