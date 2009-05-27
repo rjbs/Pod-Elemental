@@ -1,7 +1,9 @@
 package Pod::Elemental::Nester;
-use Moose;
+use Moose::Role;
 use Moose::Autobox;
-# ABSTRACT: it organizes a sequence of elements into a tree
+# ABSTRACT: something that organizes a sequence of elements into a tree
+
+use namespace::autoclean;
 
 use Pod::Elemental::Element;
 use Pod::Elemental::Element::Command;
@@ -132,6 +134,4 @@ sub nest_elements {
   return $elements;
 }
 
-__PACKAGE__->meta->make_immutable;
-no Moose;
 1;
