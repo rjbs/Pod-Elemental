@@ -1,12 +1,8 @@
 package Pod::Elemental::Element::Text;
 use Moose;
-extends 'Pod::Elemental::Element';
+with 'Pod::Elemental::Paragraph';
 # ABSTRACT: a POD text or verbatim element
 
-use Moose::Autobox;
+use namespace::autoclean;
 
-has '+type' => (default => 'text');
-
-__PACKAGE__->meta->make_immutable;
-no Moose;
 1;

@@ -3,6 +3,9 @@ use Moose;
 use Moose::Autobox;
 # ABSTRACT: it turns a Pod::Eventual event stream into objects
 
+use namespace::autoclean;
+
+use Pod::Elemental::Element::Blank;
 use Pod::Elemental::Element::Command;
 use Pod::Elemental::Element::Nonpod;
 use Pod::Elemental::Element::Text;
@@ -13,13 +16,24 @@ This method returns the name of the class to be used for the given event.
 
 =cut
 
+sub __class_for {
+  return {
+    command  => 'Pod::Elemental::Element::Command',
+    blank    => 'Pod::Elemental::Element::Blank',
+    verbatim => 'Pod::Elemental::Element::Text',
+    text     => 'Pod::Elemental::Element::Text',
+    nonpod   => 'Pod::Elemental::Element::Nonpod',
+  };
+}
+
 sub element_class_for_event {
   my ($self, $event) = @_;
   my $t = $event->{type};
-  return 'Pod::Elemental::Element::Command' if $t eq 'command';
-  return 'Pod::Elemental::Element::Text'    if $t eq 'verbatim' or $t eq 'text';
-  return 'Pod::Elemental::Element::Nonpod'  if $t eq 'nonpod';
-  Carp::croak "unknown event type: $t";
+  my $class_for = $self->__class_for;
+
+  Carp::croak "unknown event type: $t" unless exists $class_for->{ $t };
+
+  return $class_for->{ $t };
 }
 
 =method objectify_events
@@ -35,12 +49,10 @@ sub objectify_events {
   my ($self, $events) = @_;
   return $events->map(sub {
     Carp::croak("not a valid event") unless ref $_;
-    return if $_->{type} eq 'blank';
 
     my $class = $self->element_class_for_event($_);
 
     my %guts = (
-      type       => $_->{type},
       content    => $_->{content},
       start_line => $_->{start_line},
 
@@ -53,6 +65,4 @@ sub objectify_events {
   });
 }
 
-__PACKAGE__->meta->make_immutable;
-no Moose;
 1;

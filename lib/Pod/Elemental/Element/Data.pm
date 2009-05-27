@@ -1,12 +1,8 @@
 package Pod::Elemental::Element::Data;
 use Moose;
-extends 'Pod::Elemental::Element';
+with 'Pod::Elemental::Paragraph';
 # ABSTRACT: a POD data paragraph
 
-use Moose::Autobox;
+use namespace::autoclean;
 
-has '+type' => (default => 'data');
-
-__PACKAGE__->meta->make_immutable;
-no Moose;
 1;

@@ -6,14 +6,6 @@ use Moose::Autobox;
 
 with 'Pod::Elemental::Node';
 
-requires 'type';
-
-=attr type
-
-The type is a string giving a type for the element, like F<text> or F<nonpod>
-or F<command>.  These are generally the same as the event types from the event
-reader.
-
 =attr content
 
 This is the textual content of the element, as in a Pod::Eventual event, but
