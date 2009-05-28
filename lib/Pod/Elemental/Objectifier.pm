@@ -58,7 +58,7 @@ sub objectify_events {
       ($_->{type} eq 'command' ? (command => $_->{command}) : ()),
     );
 
-    chomp $guts{content};
+    chomp $guts{content} unless $_->{type} eq 'blank';
 
     $class->new(\%guts);
   });
