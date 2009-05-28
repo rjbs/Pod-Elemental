@@ -43,7 +43,6 @@ sub nest_elements {
   my ($self, $elements) = @_;
 
   my $top = Pod::Elemental::Element::Command->new({
-    type     => 'command',
     command  => 'pod',
     content  => "\n",
   });

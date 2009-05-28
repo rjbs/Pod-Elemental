@@ -1,4 +1,4 @@
-package Pod::Elemental::Element::Nonpod;
+package Pod::Elemental::Element::Generic::Nonpod;
 use Moose;
 with 'Pod::Elemental::Paragraph';
 # ABSTRACT: a non-pod element in a POD document
