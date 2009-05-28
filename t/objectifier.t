@@ -10,27 +10,40 @@ use Pod::Elemental::Objectifier;
 my $events   = Pod::Eventual::Simple->read_file('t/eg/Simple.pm');
 my $elements = Pod::Elemental::Objectifier->objectify_events($events);
 
-my $want = [
-  { type => 'command',  command => 'head1', content => "DESCRIPTION" },
-  { type => 'text',     content => re(qr{^This is .+ that\?})     },
-  { type => 'command',  command => 'synopsis', content => ""      },
-  { type => 'verbatim', content => re(qr{^  use Test.+;$})          },
-  { type => 'command',  command => 'head2', content => "Free Radical" },
-  { type => 'command',  command => 'head3', content => "Subsumed Radical" },
-  { type => 'command',  command => 'over',  content => "4" },
-  { type => 'command',  command => 'item',  content => re(qr{^\* nom.+st$}) },
-  { type => 'command',  command => 'back',  content => "" },
-  { type => 'command',  command => 'method',  content => "none"      },
-  { type => 'text',     content => "Nope, there are no methods.",    },
-  { type => 'command',  command => 'attr',    content => "also_none" },
-  { type => 'text',     content => "None of these, either."          },
-  { type => 'command',  command => 'method',  content => "i_lied"    },
-  { type => 'text',     content => "Ha!  Gotcha!"                    },
-  { type => 'command',  command => 'cut',     content => ""          },
-];
+my @want = (
+  { type => 'Nonpod',  content => ignore()                                  },
+  { type => 'Command', command => 'head1', content => "DESCRIPTION\n"       },
+  { type => 'Blank',   content => "\n"                                      },
+  { type => 'Text',    content => re(qr{^This is .+ that\?})                },
+  { type => 'Command', command => 'synopsis', content => "\n"               },
+  { type => 'Text',    content => re(qr{^  use Test.+;$})                   },
+  { type => 'Command', command => 'head2',  content => "Free Radical\n"     },
+  { type => 'Command', command => 'head3',  content => "Subsumed Radical\n" },
+  { type => 'Command', command => 'over',   content => "4\n"                },
+  { type => 'Command', command => 'item',   content => re(qr{^\* nom.+st$}) },
+  { type => 'Command', command => 'back',   content => "\n"                 },
+  { type => 'Command', command => 'method', content => "none\n"             },
+  { type => 'Text',    content => "Nope, there are no methods.\n",          },
+  { type => 'Command', command => 'attr',   content => "also_none\n"        },
+  { type => 'Text',    content => "None of these, either.\n"                },
+  { type => 'Command', command => 'method', content => "i_lied\n"           },
+  { type => 'Text',    content => "Ha!  Gotcha!\n"                          },
+  { type => 'Command', command => 'cut',    content => "\n"                 },
+);
+
+my @got = [];
+for my $elem (@$elements) {
+  my $class = ref $elem;
+  $class =~ s/^.+:://g;
+  push @got, {
+    type    => $class,
+    content => $elem->content,
+    ($elem->can('command') ? (command => $elem->command) : ()),
+  };
+}
 
 cmp_deeply(
-  $elements->grep(sub { $_->{type} ne 'nonpod' })->map(sub { $_->as_hash }),
-  $want,
+  \@got,
+  \@want,
   "we get the right chunky content we wanted",
 );

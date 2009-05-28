@@ -18,11 +18,10 @@ This method returns the name of the class to be used for the given event.
 
 sub __class_for {
   return {
-    command  => 'Pod::Elemental::Element::Command',
     blank    => 'Pod::Elemental::Element::Blank',
-    verbatim => 'Pod::Elemental::Element::Text',
-    text     => 'Pod::Elemental::Element::Text',
+    command  => 'Pod::Elemental::Element::Command',
     nonpod   => 'Pod::Elemental::Element::Nonpod',
+    text     => 'Pod::Elemental::Element::Text',
   };
 }
 
@@ -59,7 +58,7 @@ sub objectify_events {
       ($_->{type} eq 'command' ? (command => $_->{command}) : ()),
     );
 
-    chomp for values %guts;
+    chomp $guts{content};
 
     $class->new(\%guts);
   });
