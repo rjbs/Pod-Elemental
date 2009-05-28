@@ -15,7 +15,7 @@ requires 'as_debug_string';
 =attr children
 
 This attribute is an arrayref of
-L<Pod::Elemental::Element|Pod::Elemental::Element> objects, and represents
+L<Pod::Elemental::Node|Pod::Elemental::Node>-doing objects, and represents
 elements contained by an object.
 
 =cut

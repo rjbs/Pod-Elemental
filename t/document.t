@@ -12,14 +12,15 @@ use Pod::Elemental::Document;
 my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-begin.pod')
                ->grep(sub { $_->{type} ne 'nonpod' });
 my $elements = Pod::Elemental::Objectifier->objectify_events($events);
-my $document = Pod::Elemental::Document->new;
 
 Pod::Elemental::Nester->nest_elements($elements);
 
-$document->add_elements($elements);
+my $document = Pod::Elemental::Document->new({
+  children => $elements
+});
 
 my $str = do { local $/; <DATA> };
-is($document->as_string, $str, 'we got what we expected');
+is($document->as_pod_string, $str, 'we got what we expected');
 
 __DATA__
 =pod

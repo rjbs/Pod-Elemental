@@ -1,5 +1,5 @@
 package Pod::Elemental::Nester;
-use Moose;
+use Moose::Role;
 use Moose::Autobox;
 # ABSTRACT: something that organizes a sequence of elements into a tree
 
@@ -7,6 +7,8 @@ use namespace::autoclean;
 
 use Pod::Elemental::Element;
 use Pod::Elemental::Element::Command;
+
+requires 'nest_elements'
 
 =method nest_elements
 
@@ -18,10 +20,5 @@ reference it was given, which will have been reorganized in place.
 Some elements, like C<=cut> commands, may be dropped.
 
 =cut
-
-sub nest_elements {
-  my ($self, $elements) = @_;
-  return $elements;
-}
 
 1;

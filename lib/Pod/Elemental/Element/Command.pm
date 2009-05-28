@@ -1,4 +1,4 @@
-package Pod::Elemental::Element::Command;
+package Pod::Elemental::Element::Generic::Command;
 use Moose;
 # ABSTRACT: a POD =command element
 
