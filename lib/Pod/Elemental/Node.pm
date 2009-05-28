@@ -22,7 +22,7 @@ elements contained by an object.
 
 has children => (
   is   => 'rw',
-  isa  => ArrayRef[ role_type('Pod::Elemental::Element') ],
+  isa  => ArrayRef[ role_type('Pod::Elemental::Node') ],
   auto_deref => 1,
   required   => 1,
   default    => sub { [] },

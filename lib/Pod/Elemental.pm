@@ -83,8 +83,9 @@ sub read_handle {
   my $elements = $self->objectifier->objectify_events($events);
   $self->nester->nest_elements($elements);
 
-  my $document = $self->document_class->new;
-  $document->add_elements($elements);
+  my $document = $self->document_class->new({
+    children => $elements,
+  });;
 
   return $document;
 }
