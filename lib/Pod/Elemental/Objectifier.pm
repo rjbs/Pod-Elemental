@@ -5,10 +5,10 @@ use Moose::Autobox;
 
 use namespace::autoclean;
 
-use Pod::Elemental::Element::Blank;
-use Pod::Elemental::Element::Command;
-use Pod::Elemental::Element::Nonpod;
-use Pod::Elemental::Element::Text;
+use Pod::Elemental::Element::Generic::Blank;
+use Pod::Elemental::Element::Generic::Command;
+use Pod::Elemental::Element::Generic::Nonpod;
+use Pod::Elemental::Element::Generic::Text;
 
 =method element_class_for_event
 
@@ -18,10 +18,10 @@ This method returns the name of the class to be used for the given event.
 
 sub __class_for {
   return {
-    blank    => 'Pod::Elemental::Element::Blank',
-    command  => 'Pod::Elemental::Element::Command',
-    nonpod   => 'Pod::Elemental::Element::Nonpod',
-    text     => 'Pod::Elemental::Element::Text',
+    blank    => 'Pod::Elemental::Element::Generic::Blank',
+    command  => 'Pod::Elemental::Element::Generic::Command',
+    nonpod   => 'Pod::Elemental::Element::Generic::Nonpod',
+    text     => 'Pod::Elemental::Element::Generic::Text',
   };
 }
 
@@ -57,8 +57,6 @@ sub objectify_events {
 
       ($_->{type} eq 'command' ? (command => $_->{command}) : ()),
     );
-
-    chomp $guts{content} unless $_->{type} eq 'blank';
 
     $class->new(\%guts);
   });

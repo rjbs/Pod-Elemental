@@ -8,16 +8,13 @@ use namespace::autoclean;
 use Pod::Elemental::Element;
 use Pod::Elemental::Element::Command;
 
-requires 'nest_elements'
+requires 'transform_document';
 
-=method nest_elements
+=method transform_document
 
-  $nester->nest_elements(\@elements);
+  my $document = $nester->transform_document($document);
 
-This method reorganizes the given elements into a tree.  It returns the same
-reference it was given, which will have been reorganized in place.
-
-Some elements, like C<=cut> commands, may be dropped.
+This method must produce a new Document based on the input Document.
 
 =cut
 
