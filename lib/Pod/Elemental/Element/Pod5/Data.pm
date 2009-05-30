@@ -1,4 +1,4 @@
-package Pod::Elemental::Element::Data;
+package Pod::Elemental::Element::Pod5::Data;
 use Moose;
 with 'Pod::Elemental::Paragraph';
 # ABSTRACT: a POD data paragraph

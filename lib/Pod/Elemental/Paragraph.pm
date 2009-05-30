@@ -4,8 +4,6 @@ use Moose::Role;
 use Moose::Autobox;
 # ABSTRACT: a paragraph in a Pod document
 
-with 'Pod::Elemental::Node';
-
 =attr content
 
 This is the textual content of the element, as in a Pod::Eventual event, but
@@ -22,7 +20,7 @@ document where the element began.
 
 =cut
 
-has content    => (is => 'ro', isa => 'Str', required => 1);
+has content    => (is => 'rw', isa => 'Str', required => 1);
 has start_line => (is => 'ro', isa => 'Int', required => 0);
 
 =method as_pod_string

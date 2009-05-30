@@ -22,11 +22,9 @@ elements contained by an object.
 
 has children => (
   is   => 'rw',
-  isa  => ArrayRef[ role_type('Pod::Elemental::Node') ],
-  auto_deref => 1,
+  isa  => ArrayRef[ role_type('Pod::Elemental::Paragraph') ],
   required   => 1,
   default    => sub { [] },
 );
 
-no Moose::Role;
 1;

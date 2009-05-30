@@ -4,9 +4,10 @@ use Moose::Autobox;
 # ABSTRACT: work with nestable POD elements
 
 use Mixin::Linewise::Readers -readers;
+
 use Pod::Elemental::Document;
 use Pod::Elemental::Element;
-use Pod::Elemental::Nester;
+use Pod::Elemental::Nester::Pod5;
 use Pod::Elemental::Objectifier;
 use Pod::Eventual::Simple;
 
@@ -41,7 +42,7 @@ has objectifier => (
 
 =attr nester
 
-The nester (by default a new Pod::Elemental::Nester) provides a
+The nester (by default a new Pod::Elemental::Nester::Pod5) provides a
 C<nest_elements> method that, given an array of elements, structures them into
 a tree.
 
@@ -50,7 +51,7 @@ a tree.
 has nester => (
   is       => 'ro',
   required => 1,
-  default  => sub { return Pod::Elemental::Nester->new },
+  default  => sub { return Pod::Elemental::Nester::Pod5->new },
 );
 
 =attr document_class

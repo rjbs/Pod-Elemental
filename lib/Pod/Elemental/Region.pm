@@ -1,6 +1,9 @@
 package Pod::Elemental::Region;
 use Moose::Role;
-with 'Pod::Elemental::Paragraph';
+with qw(
+  Pod::Elemental::Paragraph
+  Pod::Elemental::Node
+);
 # ABSTRACT: a command that establishes a region
 
 use Pod::Elemental::Types qw(FormatName);

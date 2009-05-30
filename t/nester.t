@@ -14,6 +14,6 @@ my $document = Pod::Elemental::Document->new({ children => $elements });
 
 my $pod5_doc = Pod::Elemental::Nester::Pod5->transform_document($document);
 
-use YAML::XS;
-warn Dump($document->children);
+# use YAML::XS;
+# warn Dump($pod5_doc->children);
 
