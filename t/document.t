@@ -2,25 +2,26 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 use Test::Deep;
+use Test::Differences;
 
 use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental::Objectifier;
-use Pod::Elemental::Nester;
+use Pod::Elemental::Nester::Pod5;
 use Pod::Elemental::Document;
 
 my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-begin.pod')
                ->grep(sub { $_->{type} ne 'nonpod' });
 my $elements = Pod::Elemental::Objectifier->objectify_events($events);
 
-Pod::Elemental::Nester->nest_elements($elements);
-
 my $document = Pod::Elemental::Document->new({
   children => $elements
 });
 
+$document = Pod::Elemental::Nester::Pod5->transform_document($document);
+
 my $str = do { local $/; <DATA> };
-is($document->as_pod_string, $str, 'we got what we expected');
+eq_or_diff($document->as_pod_string, $str, 'we got what we expected');
 
 __DATA__
 =pod
@@ -35,7 +36,7 @@ Foo.
 
 =head1 Inner!
 
-=over 
+=over
 
 =item * one
 

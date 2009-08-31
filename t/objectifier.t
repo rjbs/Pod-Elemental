@@ -20,6 +20,8 @@ my @want = (
   { type => 'Blank',   content => "\n"                                      },
   { type => 'Text',    content => re(qr{^  use Test.+;$})                   },
   { type => 'Blank',   content => "\n"                                      },
+  { type => 'Text',    content => re(qr{^  .*uisp.*$})                      },
+  { type => 'Blank',   content => "\n"                                      },
   { type => 'Command', command => 'head2',  content => "Free Radical\n"     },
   { type => 'Blank',   content => "\n"                                      },
   { type => 'Command', command => 'head3',  content => "Subsumed Radical\n" },
@@ -57,6 +59,7 @@ for my $elem (@$elements) {
   };
 }
 
+use Data::Dumper;
 cmp_deeply(
   \@got,
   \@want,

@@ -59,6 +59,7 @@ sub transform_document {
         warn "can combine";
         $last_para->content(
           $last_para->content . $current->content
+        );
       }
     }
 

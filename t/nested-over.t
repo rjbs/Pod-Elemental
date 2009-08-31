@@ -5,14 +5,16 @@ use Test::Deep;
 
 use Moose::Autobox;
 use Pod::Eventual::Simple;
+use Pod::Elemental::Document;
 use Pod::Elemental::Objectifier;
-use Pod::Elemental::Nester;
+use Pod::Elemental::Nester::Pod5;
 
 my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-over.pod')
                ->grep(sub { $_->{type} ne 'nonpod' });
 my $elements = Pod::Elemental::Objectifier->objectify_events($events);
+my $document = Pod::Elemental::Document->new({ children => $elements });
 
-Pod::Elemental::Nester->nest_elements($elements);
+$document = Pod::Elemental::Nester::Pod5->transform_document($document);
 
 my $want = [
   {
@@ -52,7 +54,7 @@ my $want = [
 ];
 
 cmp_deeply(
-  [ map {$_->as_hash} @$elements ],
+  [ map { {%$_} } @$elements ],
   $want,
   'nested =over is not a problem'
 );

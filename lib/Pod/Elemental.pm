@@ -50,7 +50,6 @@ a tree.
 
 has nester => (
   is       => 'ro',
-  required => 1,
   default  => sub { return Pod::Elemental::Nester::Pod5->new },
 );
 
@@ -82,11 +81,12 @@ sub read_handle {
 
   my $events   = $self->event_reader->read_handle($handle);
   my $elements = $self->objectifier->objectify_events($events);
-  $self->nester->nest_elements($elements);
 
   my $document = $self->document_class->new({
     children => $elements,
-  });;
+  });
+
+  $document = $self->nester->transform_document($document) if $self->nester;
 
   return $document;
 }

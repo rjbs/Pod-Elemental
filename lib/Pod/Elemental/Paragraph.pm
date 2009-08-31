@@ -34,7 +34,7 @@ this method will include the stringified children as well.
 
 sub as_pod_string {
   my ($self) = @_;
-  return $self->content . "\n";
+  return $self->content;
 }
 
 =method as_debug_string
