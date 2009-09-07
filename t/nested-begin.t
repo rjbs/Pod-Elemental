@@ -1,21 +1,21 @@
 use strict;
 use warnings;
 use Test::More;
-plan skip_all => 'Pod5 nester is still under construction';
+plan skip_all => 'Pod5 Transformer is still under construction';
 plan tests => 1;
 use Test::Deep;
 
 use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental::Objectifier;
-use Pod::Elemental::Nester::Pod5;
+use Pod::Elemental::Transformer::Pod5;
 
 my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-begin.pod')
                ->grep(sub { $_->{type} ne 'nonpod' });
 my $elements = Pod::Elemental::Objectifier->objectify_events($events);
 my $document = Pod::Elemental::Document->new({ children => $elements });
 
-$document = Pod::Elemental::Nester::Pod5->transform_document($document);
+$document = Pod::Elemental::Transformer::Pod5->transform_document($document);
 
 my $want = {
   cmd('head1'),

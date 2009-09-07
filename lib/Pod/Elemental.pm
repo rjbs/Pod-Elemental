@@ -7,7 +7,7 @@ use Mixin::Linewise::Readers -readers;
 
 use Pod::Elemental::Document;
 use Pod::Elemental::Element;
-use Pod::Elemental::Nester::Pod5;
+use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental::Objectifier;
 use Pod::Eventual::Simple;
 
@@ -38,19 +38,6 @@ has objectifier => (
   is => 'ro',
   required => 1,
   default  => sub { return Pod::Elemental::Objectifier->new },
-);
-
-=attr nester
-
-The nester (by default a new Pod::Elemental::Nester::Pod5) provides a
-C<nest_elements> method that, given an array of elements, structures them into
-a tree.
-
-=cut
-
-has nester => (
-  is       => 'ro',
-  default  => sub { return Pod::Elemental::Nester::Pod5->new },
 );
 
 =attr document_class
@@ -85,8 +72,6 @@ sub read_handle {
   my $document = $self->document_class->new({
     children => $elements,
   });
-
-  $document = $self->nester->transform_document($document) if $self->nester;
 
   return $document;
 }

@@ -7,7 +7,7 @@ use Test::Differences;
 use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental::Objectifier;
-use Pod::Elemental::Nester::Pod5;
+use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental::Document;
 
 my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-begin.pod')
@@ -18,7 +18,7 @@ my $document = Pod::Elemental::Document->new({
   children => $elements
 });
 
-$document = Pod::Elemental::Nester::Pod5->transform_document($document);
+$document = Pod::Elemental::Transformer::Pod5->transform_document($document);
 
 my $str = do { local $/; <DATA> };
 eq_or_diff($document->as_pod_string, $str, 'we got what we expected');
