@@ -1,6 +1,6 @@
-package Pod::Elemental::Nester::Pod5;
+package Pod::Elemental::Transformer::Pod5;
 use Moose;
-with 'Pod::Elemental::Nester';
+with 'Pod::Elemental::Transformer';
 # ABSTRACT: the default, minimal semantics of Perl5's pod element hierarchy
 
 use Moose::Autobox;
