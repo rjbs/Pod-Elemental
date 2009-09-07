@@ -1,6 +1,10 @@
 Revision history for {{$dist->name}}
 
-{{$NEXT}}
+0.092500  2009-09-07
+          major restructure
+          lots of features removed, but they'll come back
+
+0.091470  2009-05-27 20:43:28 UTC
           temporary workaround for new Pod::Eventual's "blank" events
 
 0.003     2009-01-31
