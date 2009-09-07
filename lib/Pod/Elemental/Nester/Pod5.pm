@@ -32,7 +32,7 @@ sub transform_document {
       $current = $self->_xform_text($current, \@stack);
     }
 
-    use Data::Dumper;
+    # use Data::Dumper;
     # warn Dumper($new_doc->children);
 
     if (
@@ -56,7 +56,7 @@ sub transform_document {
             or $last_para->isa( $self->_class('Verbatim'))))
         )
       ) {
-        warn "can combine";
+        # warn "can combine";
         $last_para->content(
           $last_para->content . $current->content
         );

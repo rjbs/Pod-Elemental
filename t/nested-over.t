@@ -1,6 +1,8 @@
 use strict;
 use warnings;
-use Test::More tests => 1;
+use Test::More;
+plan skip_all => 'Pod5 nester is still under construction';
+plan tests => 1;
 use Test::Deep;
 
 use Moose::Autobox;
