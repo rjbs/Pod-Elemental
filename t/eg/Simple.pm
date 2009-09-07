@@ -10,6 +10,8 @@ This is a test.  How many times do I need to tell you that?
 
   use Test::Example::Pod q(uisp);
 
+  uisp('q');
+
 =head2 Free Radical
 
 =head3 Subsumed Radical
