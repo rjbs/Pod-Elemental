@@ -1,7 +1,7 @@
-package Pod::Elemental::Nester;
+package Pod::Elemental::Transformer;
 use Moose::Role;
 use Moose::Autobox;
-# ABSTRACT: something that organizes a sequence of elements into a tree
+# ABSTRACT: something that transforms a document tree into a new tree
 
 use namespace::autoclean;
 
