@@ -5,9 +5,6 @@ use Moose::Autobox;
 
 use namespace::autoclean;
 
-use Pod::Elemental::Element;
-use Pod::Elemental::Element::Command;
-
 requires 'transform_document';
 
 =method transform_document
