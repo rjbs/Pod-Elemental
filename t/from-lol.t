@@ -28,13 +28,15 @@ my $flat_lol = [
   [ '=end'    => ':pod_region'   ],
 ];
 
-my $document = Pod::Elemental::Document->new_from_lol($flat_lol);
-isa_ok($document, 'Pod::Elemental::Document');
-is(
-  $document->as_pod_string,
-  $pod_string,
-  "from_lol stringifies to what we want",
-);
+{
+  my $document = Pod::Elemental::Document->new_from_lol($flat_lol);
+  isa_ok($document, 'Pod::Elemental::Document');
+  is(
+    $document->as_pod_string,
+    $pod_string,
+    "from_lol stringifies to what we want",
+  );
+}
 
 my $nested_lol = [
   [ '=head1' => "This is a head."    ],
@@ -52,3 +54,14 @@ my $nested_lol = [
     ] ],
   ] ],
 ];
+
+{
+  my $document = Pod::Elemental::Document->new_from_lol($nested_lol);
+  isa_ok($document, 'Pod::Elemental::Document');
+  is(
+    $document->as_pod_string,
+    $pod_string,
+    "from_lol stringifies to what we want",
+  );
+}
+

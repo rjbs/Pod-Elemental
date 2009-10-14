@@ -7,7 +7,19 @@ use Moose::Autobox;
 use namespace::autoclean;
 
 use Pod::Elemental::Element::Generic::Blank;
-my $GENERIC = 'Pod::Elemental::Element::Generic::';
+use String::RewritePrefix;
+
+sub _expand_name {
+  my ($self, $name) = @_;
+
+  return String::RewritePrefix->rewrite(
+    {
+      '' => 'Pod::Elemental::Element::',
+      '=' => ''
+    },
+    $name,
+  );
+}
 
 sub as_pod_string {
   my ($self) = @_;
@@ -20,6 +32,43 @@ sub as_pod_string {
 
 sub as_debug_string { die }
 
+sub _elem_from_lol_entry {
+  my ($self, $entry) = @_;
+  my ($type, $content, $arg) = @$entry;
+  $arg ||= {};
+
+  if (! defined $type) {
+    my $n_class = $self->_expand_name($arg->{class} || 'Generic::Text');
+    Class::MOP::load_class($n_class);
+    return $n_class->new({ content => "$content\n" });
+  } elsif ($type =~ /\A=(\w+)\z/) {
+    my $command = $1;
+    my $n_class = $self->_expand_name($arg->{class} || 'Generic::Command');
+    Class::MOP::load_class($n_class);
+    return $n_class->new({
+      command => $command,
+      content => "$content\n"
+    });
+  } else {
+    my $n_class = $self->_expand_name($arg->{class} || 'Pod5::Region');
+    Class::MOP::load_class($n_class);
+
+    my @children;
+    for my $child (@$content) {
+      push @children, $self->_elem_from_lol_entry($child);
+    } continue {
+      my $blank = $self->_expand_name('Generic::Blank');
+      push @children, $blank->new({ content => "\n" });
+    }
+
+    return $n_class->new({
+      format_name => $type,
+      content     => '',
+      children    => \@children,
+    })
+  }
+}
+
 sub new_from_lol {
   my ($class, $lol) = @_;
 
@@ -27,26 +76,10 @@ sub new_from_lol {
 
   my @children;
   ENTRY: for my $entry (@$lol) {
-    my ($type, $content, $arg) = @$entry;
-    $arg ||= {};
-
-    if (! defined $type) {
-      my $n_class = $arg->{class} || "${GENERIC}Text";
-      Class::MOP::load_class($n_class);
-      push @children, $n_class->new({ content => "$content\n" });
-    } elsif ($type =~ /\A=(\w+)\z/) {
-      my $command = $1;
-      my $n_class = $arg->{class} || "${GENERIC}Command";
-      Class::MOP::load_class($n_class);
-      push @children, $n_class->new({
-        command => $command,
-        content => "$content\n"
-      });
-    } else {
-      # die "unimplemented";
-    }
+    my $elem = $self->_elem_from_lol_entry($entry);
+    push @children, $elem;
   } continue {
-    my $blank = "${GENERIC}Blank";
+    my $blank = $self->_expand_name('Generic::Blank');
     push @children, $blank->new({ content => "\n" });
   }
 

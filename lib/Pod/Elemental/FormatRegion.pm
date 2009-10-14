@@ -141,9 +141,4 @@ sub command {
   return 'begin';
 }
 
-sub as_debug_string {
-  my ($self) = @_;
-  return $self->as_string; # XXX: obviously this sucks -- rjbs, 2008-10-26
-}
-
 1;
