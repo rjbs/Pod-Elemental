@@ -6,7 +6,6 @@ use Moose::Autobox;
 use Mixin::Linewise::Readers -readers;
 
 use Pod::Elemental::Document;
-use Pod::Elemental::Element;
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental::Objectifier;
 use Pod::Eventual::Simple;
