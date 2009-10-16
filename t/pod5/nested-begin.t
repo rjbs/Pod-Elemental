@@ -1,6 +1,14 @@
+#!perl
 use strict;
 use warnings;
+
+# PURPOSE:
+# show that we can properly nest multiple regions
+
 use Test::More;
+
+exit;
+
 plan skip_all => 'Pod5 Transformer is still under construction';
 plan tests => 1;
 use Test::Deep;

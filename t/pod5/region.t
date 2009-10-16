@@ -2,7 +2,12 @@
 use strict;
 use warnings;
 
-use Test::More 'no_plan';
+# PURPOSE:
+# show that begin/end are turned into regions with the correct properties
+
+use Test::More;
+
+exit;
 
 use Pod::Elemental;
 use Pod::Elemental::Transformer::Pod5;
