@@ -190,7 +190,8 @@ sub _collect_runs {
       last NEXT;
     }
 
-    pop @to_collect while $to_collect[-1]->isa( $self->_gen_class('Blank') );
+    pop @to_collect
+      while $paras->[ $to_collect[-1] ]->isa( $self->_gen_class('Blank') );
     next PASS unless @to_collect >= 3;
 
     my $new_content = $paras
