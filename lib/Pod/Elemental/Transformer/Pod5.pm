@@ -227,20 +227,4 @@ sub transform_document {
   return $new_doc;
 }
 
-sub _xform_text {
-  my ($self, $para, $stack) = @_;
-
-  my $in_data = $stack->[0]->does('Pod::Elemental::FormatRegion')
-             && ! $stack->[0]->is_pod;
-
-  my $new_class = $in_data                   ? $self->_class('Data')
-                : ($para->content =~ /\A\s/) ? $self->_class('Verbatim')
-                :                              $self->_class('Ordinary');
-  
-  return $new_class->new({
-    content    => $para->content,
-    start_line => $para->start_line,
-  });
-}
-
 1;
