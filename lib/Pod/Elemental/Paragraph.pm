@@ -45,9 +45,11 @@ document.  Its exact output is likely to change over time.
 
 =cut
 
-sub as_debug_string {
-  my ($self) = @_;
-  return $self->as_string;
+sub _nl_replace {
+  use utf8;
+  $_[1] =~ s/\n/␤/g;
 }
+
+requires 'as_debug_string';
 
 1;

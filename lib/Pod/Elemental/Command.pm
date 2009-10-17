@@ -15,4 +15,9 @@ sub as_pod_string {
   sprintf "=%s%s", $self->command, ($content =~ /\S/ ? " $content" : "\n");
 }
 
+sub as_debug_string {
+  my ($self) = @_;
+  return sprintf '=%s', $self->command;
+}
+
 1;

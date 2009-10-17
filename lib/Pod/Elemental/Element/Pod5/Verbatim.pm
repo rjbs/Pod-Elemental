@@ -5,4 +5,8 @@ with 'Pod::Elemental::Paragraph';
 
 use namespace::autoclean;
 
+sub as_debug_string {
+  return '(Pod5 Verbatim)';
+}
+
 1;

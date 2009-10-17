@@ -30,7 +30,9 @@ sub as_pod_string {
     "=cut\n";
 }
 
-sub as_debug_string { die }
+sub as_debug_string {
+  return 'Document'
+}
 
 sub _elem_from_lol_entry {
   my ($self, $entry) = @_;

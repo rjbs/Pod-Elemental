@@ -40,7 +40,17 @@ sub as_pod_string {
     ($content =~ /\S/ ? " $content" : "\n");
 }
 
-sub as_debug_string { $_[0]->as_pod_string }
+sub as_debug_string {
+  my ($self) = @_;
+
+  my $colon = $self->is_pod ? ':' : '';
+
+  my $string = sprintf "=%s %s",
+    $self->command,
+    $colon . $self->format_name;
+
+  return $string;
+}
 
 no Moose;
 1;

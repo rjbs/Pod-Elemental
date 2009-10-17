@@ -27,4 +27,17 @@ has children => (
   default    => sub { [] },
 );
 
+around as_debug_string => sub {
+  my ($orig, $self) = @_;
+
+  my $str = $self->$orig;
+
+  my @children = map { $_->as_debug_string } $self->children->flatten;
+  s/^/  /sgm for @children;
+
+  $str = join "\n", $str, @children;
+
+  return $str;
+};
+
 1;
