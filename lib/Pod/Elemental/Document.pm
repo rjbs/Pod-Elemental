@@ -53,9 +53,7 @@ sub _elem_from_lol_entry {
     my $n_class = $self->_expand_name($arg->{class} || 'Pod5::Region');
     Class::MOP::load_class($n_class);
 
-    my @children = $self->_expand_name('Generic::Blank')->new({
-      content => "\n",
-    });
+    my @children;
 
     for my $child (@$content) {
       push @children, $self->_elem_from_lol_entry($child);
@@ -63,6 +61,9 @@ sub _elem_from_lol_entry {
       my $blank = $self->_expand_name('Generic::Blank');
       push @children, $blank->new({ content => "\n" });
     }
+
+    pop @children
+      while $children[-1]->isa('Pod::Elemental::Element::Generic::Blank');
 
     my ($colon, $target) = $type =~ /\A(:)?(.+)\z/;
 

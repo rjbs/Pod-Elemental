@@ -87,6 +87,12 @@ sub _collect_regions {
 
     my $region_paras = $self->__extract_region("$colon$target", \@in_paras);
 
+    $region_paras->shift
+      while $region_paras->[0]->isa('Pod::Elemental::Element::Generic::Blank');
+
+    $region_paras->pop
+      while $region_paras->[-1]->isa('Pod::Elemental::Element::Generic::Blank');
+
     my $region = $self->_class('Region')->new({
       children    => $self->_collect_regions($region_paras),
       format_name => $target,

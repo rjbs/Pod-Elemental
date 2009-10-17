@@ -20,18 +20,24 @@ sub as_pod_string {
 
   my $colon = $self->is_pod ? ':' : '';
 
-  my $string = sprintf "=%s %s%s",
-    $self->command,
+  if ($self->children->length) {
+    my $string = sprintf "=%s %s%s\n",
+      $self->command,
+      $colon . $self->format_name,
+      ($content =~ /\S/ ? " $content" : "\n");
+
+    $string .= $self->children->map(sub { $_->as_pod_string })->join(q{});
+
+    $string .= sprintf "\n=%s %s\n",
+      $self->closing_command,
+      $colon . $self->format_name;
+
+    return $string;
+  }
+
+  return sprintf "=for %s%s",
     $colon . $self->format_name,
     ($content =~ /\S/ ? " $content" : "\n");
-
-  $string .= $self->children->map(sub { $_->as_pod_string })->join(q{});
-
-  $string .= sprintf "=%s %s\n",
-    $self->closing_command,
-    $colon . $self->format_name;
-
-  return $string;
 }
 
 sub as_debug_string { $_[0]->as_pod_string }
