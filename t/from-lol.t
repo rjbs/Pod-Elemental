@@ -5,6 +5,8 @@ use warnings;
 use Test::More 'no_plan';
 use Pod::Elemental::Document;
 
+use Test::Differences;
+
 my $pod_string = do {
   local $/;
   open my $fh, '<', 't/eg/from-lol.pod' or die "can't read test data: $!";
@@ -58,7 +60,7 @@ my $nested_lol = [
 {
   my $document = Pod::Elemental::Document->new_from_lol($nested_lol);
   isa_ok($document, 'Pod::Elemental::Document');
-  is(
+  eq_or_diff(
     $document->as_pod_string,
     $pod_string,
     "from_lol stringifies to what we want",

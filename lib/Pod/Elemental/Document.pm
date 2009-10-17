@@ -61,9 +61,12 @@ sub _elem_from_lol_entry {
       push @children, $blank->new({ content => "\n" });
     }
 
+    my ($colon, $target) = $type =~ /\A(:)?(.+)\z/;
+
     return $n_class->new({
-      format_name => $type,
-      content     => '',
+      format_name => $target,
+      is_pod      => $colon ? 1 : 0,
+      content     => "\n",
       children    => \@children,
     })
   }

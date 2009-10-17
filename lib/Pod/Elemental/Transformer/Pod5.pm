@@ -18,6 +18,37 @@ use Pod::Elemental::Element::Pod5::Region;
 sub _gen_class { "Pod::Elemental::Element::Generic::$_[1]" }
 sub _class     { "Pod::Elemental::Element::Pod5::$_[1]" }
 
+sub _region_para_parts {
+  my ($self, $para) = @_;
+
+  my ($colon, $target, $content, $nl) = $para->content =~ m/
+    \A
+    (:)?
+    (\S+)
+    (?:\s+(.+))?
+    (\s+)\z
+  /x;
+
+  Carp::confess("=begin cannot be parsed") unless defined $target;
+
+  $colon   ||= '';
+  $content ||= '';
+
+  return ($colon, $target, "$content$nl");
+}
+
+sub __is_cmd {
+  my ($self, $para, @cmds) = @_;
+
+  return unless $para->does('Pod::Elemental::Command');
+  
+  for my $cmd (@cmds) {
+    return 1 if $para->command eq $cmd;
+  }
+
+  return;
+}
+
 sub _collect_regions {
   my ($self, $in_paras) = @_;
 
@@ -25,39 +56,39 @@ sub _collect_regions {
   my @out_paras;
 
   PARA: while (my $para = shift @in_paras) {
-    @out_paras->push($para), next PARA
-      unless $para->does('Pod::Elemental::Command')
-      and    $para->command eq 'begin';
+    @out_paras->push($para), next PARA unless $self->__is_cmd($para, 'begin');
 
-    my ($colon, $target, $content) = $para->content =~ m/
-      \A
-      (:)?
-      (\S+)
-      (?:\s+(.+))?
-      \Z
-    /xs;
+    my ($colon, $target, $content) = $self->_region_para_parts($para);
 
-    Carp::confess("=begin cannot be parsed") unless defined $target;
-    $colon ||= "";
+    my %nest = ("$colon$target" => 1);
 
     my @region_paras;
     REGION_PARA: while (my $region_para = shift @in_paras) {
-      last REGION_PARA
-        if  $region_para->does('Pod::Elemental::Command')
-        and ($region_para->command eq 'end')
-        and ($region_para->content =~ /^\Q$colon$target\E/);
+      if ($self->__is_cmd($region_para, qw(begin end))) {
+        my ($r_colon, $r_target) = $self->_region_para_parts($region_para);
 
-      Carp::confess("=begin $colon$target region was never terminated")
-        unless @in_paras;
+        for ($nest{ "$r_colon$r_target" }) {
+          $_++ if $region_para->command eq 'begin';
+          $_-- if $region_para->command eq 'end';
+
+          Carp::confess("=end $r_colon$r_target without matching begin")
+            if $_ < 0;
+
+          last REGION_PARA
+            if $_ == 0 and "$r_colon$r_target" eq "$colon$target";
+        }
+      }
 
       @region_paras->push($region_para);
     };
 
     my $region = $self->_class('Region')->new({
-      children    => $self->_collect_regions(\@region_paras),
+      children    => $self->_collect_regions(
+        $self->_strip_ends(\@region_paras)
+      ),
       format_name => $target,
       is_pod      => $colon ? 1 : 0,
-      content     => defined $content ? $content : '',
+      content     => $content,
     });
 
     @out_paras->push($region);
@@ -81,9 +112,6 @@ sub _strip_ends {
   @in_paras->pop
     while $in_paras[-1]->does('Pod::Elemental::Command')
     and   $in_paras[-1]->command eq 'cut';
-
-  @in_paras->pop
-    while $in_paras[-1]->isa('Pod::Elemental::Element::Generic::Blank');
 
   return \@in_paras;
 }

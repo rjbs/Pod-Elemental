@@ -5,7 +5,7 @@ use warnings;
 # PURPOSE:
 # show that begin/end are turned into regions with the correct properties
 
-use Test::More tests => 2;
+use Test::More tests => 4;
 
 use Pod::Elemental;
 use Pod::Elemental::Transformer::Pod5;
@@ -38,4 +38,3 @@ my $doc_pod5 = Pod::Elemental::Transformer::Pod5->new->transform_document(
   is(@subsub, 0, "there are no (3rd-level) region post transformation");
 }
 
-diag $doc_pod5->as_pod_string;

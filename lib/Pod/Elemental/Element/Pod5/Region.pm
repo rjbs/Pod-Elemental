@@ -22,11 +22,11 @@ sub as_pod_string {
   my $string = sprintf "=%s %s%s\n",
     $self->command,
     $colon . $self->format_name,
-    ($content =~ /\S/ ? " $content" : "");
+    ($content =~ /\S/ ? " $content" : "\n");
 
   $string .= $self->children->map(sub { $_->as_pod_string })->join(q{});
 
-  $string .= sprintf "=%s %s\n\n",
+  $string .= sprintf "=%s %s\n",
     $self->closing_command,
     $colon . $self->format_name;
 
