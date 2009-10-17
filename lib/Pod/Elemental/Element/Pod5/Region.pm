@@ -19,7 +19,7 @@ sub as_pod_string {
 
   my $colon = $self->is_pod ? ':' : '';
 
-  my $string = sprintf "=%s %s%s\n",
+  my $string = sprintf "=%s %s%s",
     $self->command,
     $colon . $self->format_name,
     ($content =~ /\S/ ? " $content" : "\n");

@@ -83,9 +83,7 @@ sub _collect_regions {
     };
 
     my $region = $self->_class('Region')->new({
-      children    => $self->_collect_regions(
-        $self->_strip_ends(\@region_paras)
-      ),
+      children    => $self->_collect_regions(\@region_paras),
       format_name => $target,
       is_pod      => $colon ? 1 : 0,
       content     => $content,

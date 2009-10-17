@@ -53,7 +53,10 @@ sub _elem_from_lol_entry {
     my $n_class = $self->_expand_name($arg->{class} || 'Pod5::Region');
     Class::MOP::load_class($n_class);
 
-    my @children;
+    my @children = $self->_expand_name('Generic::Blank')->new({
+      content => "\n",
+    });
+
     for my $child (@$content) {
       push @children, $self->_elem_from_lol_entry($child);
     } continue {
