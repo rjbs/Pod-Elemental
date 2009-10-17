@@ -17,16 +17,18 @@ sub as_pod_string {
 
   my $content = $self->content;
 
+  my $colon = $self->is_pod ? ':' : '';
+
   my $string = sprintf "=%s %s%s\n",
     $self->command,
-    $self->format_name,
-    ($content =~ /\S/ ? " $content" : "\n");
+    $colon . $self->format_name,
+    ($content =~ /\S/ ? " $content" : "");
 
   $string .= $self->children->map(sub { $_->as_pod_string })->join(q{});
 
-  $string .= sprintf "=%s %s\n",
+  $string .= sprintf "=%s %s\n\n",
     $self->closing_command,
-    $self->format_name;
+    $colon . $self->format_name;
 
   return $string;
 }
