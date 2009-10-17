@@ -29,7 +29,7 @@ sub _region_para_parts {
     (\s+)\z
   /x;
 
-  Carp::confess("=begin cannot be parsed") unless defined $target;
+  confess("=begin cannot be parsed") unless defined $target;
 
   $colon   ||= '';
   $content ||= '';
@@ -49,6 +49,31 @@ sub __is_cmd {
   return;
 }
 
+sub __extract_region {
+  my ($self, $name, $in_paras) = @_;
+
+  my %nest = ($name => 1);
+  my @region_paras;
+
+  REGION_PARA: while (my $region_para = shift @$in_paras) {
+    if ($self->__is_cmd($region_para, qw(begin end))) {
+      my ($r_colon, $r_target) = $self->_region_para_parts($region_para);
+
+      for ($nest{ "$r_colon$r_target" }) {
+        $_ += $region_para->command eq 'begin' ? 1 : -1;
+
+        confess("=end $r_colon$r_target without matching begin") if $_ < 0;
+
+        last REGION_PARA if !$_ and "$r_colon$r_target" eq $name;
+      }
+    }
+
+    @region_paras->push($region_para);
+  };
+
+  return \@region_paras;
+}
+
 sub _collect_regions {
   my ($self, $in_paras) = @_;
 
@@ -60,30 +85,10 @@ sub _collect_regions {
 
     my ($colon, $target, $content) = $self->_region_para_parts($para);
 
-    my %nest = ("$colon$target" => 1);
-
-    my @region_paras;
-    REGION_PARA: while (my $region_para = shift @in_paras) {
-      if ($self->__is_cmd($region_para, qw(begin end))) {
-        my ($r_colon, $r_target) = $self->_region_para_parts($region_para);
-
-        for ($nest{ "$r_colon$r_target" }) {
-          $_++ if $region_para->command eq 'begin';
-          $_-- if $region_para->command eq 'end';
-
-          Carp::confess("=end $r_colon$r_target without matching begin")
-            if $_ < 0;
-
-          last REGION_PARA
-            if $_ == 0 and "$r_colon$r_target" eq "$colon$target";
-        }
-      }
-
-      @region_paras->push($region_para);
-    };
+    my $region_paras = $self->__extract_region("$colon$target", \@in_paras);
 
     my $region = $self->_class('Region')->new({
-      children    => $self->_collect_regions(\@region_paras),
+      children    => $self->_collect_regions($region_paras),
       format_name => $target,
       is_pod      => $colon ? 1 : 0,
       content     => $content,
@@ -114,11 +119,39 @@ sub _strip_ends {
   return \@in_paras;
 }
 
+sub _autotype_text {
+  my ($self, $paras, $is_pod) = @_;
+
+  $paras->each(sub {
+    my ($i, $elem) = @_;
+    
+    if ($elem->isa( $self->_gen_class('Text') )) {
+      my $class = $is_pod
+                ? $elem->content =~ /\A\s/
+                  ? $self->_class('Verbatim')
+                  : $self->_class('Ordinary')
+                : $self->_class('Data');
+
+      $paras->[ $i ] = $class->new({ content => $elem->content });
+    }
+
+    if ($elem->isa( $self->_class('Region') )) {
+      $self->_autotype_text( $elem->children, $elem->is_pod );
+    }
+  });
+
+  # I really don't feel bad about rewriting in place by the time we get here.
+  # These are private methods, and I know the consequence of calling them.
+  # Nobody else should be.  So there.  -- rjbs, 2009-10-17
+  return $paras;
+}
+
 sub transform_document {
   my ($self, $document) = @_;
 
   my $end_stripped     = $self->_strip_ends($document->children);
   my $region_collected = $self->_collect_regions($end_stripped);
+  my $text_typed       = $self->_autotype_text($region_collected, 1);
 
   my $new_doc = Pod::Elemental::Document->new({
     children => $region_collected,
