@@ -1,4 +1,5 @@
 package Pod::Elemental::Element::Pod5::Region;
+# ABSTRACT: a region of Pod (this role likely to be removed)
 use Moose;
 with qw(
   Pod::Elemental::Paragraph

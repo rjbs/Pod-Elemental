@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 package Pod::Elemental::Types;
+# ABSTRACT: data types for Pod::Elemental
 use MooseX::Types -declare => [ qw(FormatName) ];
 use MooseX::Types::Moose qw(Str);
 
