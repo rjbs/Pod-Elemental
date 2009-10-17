@@ -1,5 +1,8 @@
 Revision history for {{$dist->name}}
 
+0.092900  2009-10-17
+          Pod5 support is, at least tentatively, complete
+
 0.092500  2009-09-07
           major restructure
           lots of features removed, but they'll come back
