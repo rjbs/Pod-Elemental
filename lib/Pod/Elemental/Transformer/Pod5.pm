@@ -146,12 +146,72 @@ sub _autotype_text {
   return $paras;
 }
 
+sub __text_class {
+  my ($self, $para) = @_;
+
+  for my $type (qw(Ordinary Verbatim Data)) {
+    my $class = $self->_class($type);
+    return $class if $para->isa($class);
+  }
+
+  return;
+}
+
+sub _collect_runs {
+  my ($self, $paras) = @_;
+
+  $paras->grep(sub { $_->isa( $self->_class('Region') ) })->each_value(sub {
+    $self->_collect_runs($_->children) 
+  });
+
+  PASS: for my $start (0 .. $#$paras) {
+    last PASS if $#$paras - $start < 2; # we need X..Blank..X at minimum
+
+    my $class = $self->__text_class( $paras->[ $start ] );
+    next PASS unless $class;
+
+    my @to_collect = ($start);
+    NEXT: for my $next ($start+1 .. $#$paras) {
+      if (
+        $paras->[ $next ]->isa($class)
+        or
+        $paras->[ $next ]->isa( $self->_gen_class('Blank') )
+      ) {
+        push @to_collect, $next;
+        next NEXT;
+      }
+      
+      last NEXT;
+    }
+
+    pop @to_collect while $to_collect[-1]->isa( $self->_gen_class('Blank') );
+    next PASS unless @to_collect >= 3;
+
+    my $new_content = $paras
+                    ->slice(\@to_collect)
+                    ->map(sub { $_->content })
+                    ->join(q{});
+
+    splice @$paras, $start, scalar(@to_collect), $class->new({
+      content => $new_content,
+    });
+
+    redo PASS;
+  }
+
+  # I really don't feel bad about rewriting in place by the time we get here.
+  # These are private methods, and I know the consequence of calling them.
+  # Nobody else should be.  So there.  -- rjbs, 2009-10-17
+  return $paras;
+}
+
 sub transform_document {
   my ($self, $document) = @_;
 
   my $end_stripped     = $self->_strip_ends($document->children);
   my $region_collected = $self->_collect_regions($end_stripped);
   my $text_typed       = $self->_autotype_text($region_collected, 1);
+  my $text_collected   = $self->_collect_runs($text_typed);
 
   my $new_doc = Pod::Elemental::Document->new({
     children => $region_collected,

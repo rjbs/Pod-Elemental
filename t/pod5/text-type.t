@@ -36,11 +36,11 @@ isa_ok($children[1], _pod5('Region'),   "...second top-level para");
 
   is(@children, 5, "top-level-contained region has five non-blanks");
 
-  isa_ok($children[0], _pod5('Ordinary'), "...1st top-level para");
-  isa_ok($children[1], _pod5('Verbatim'),   "...2nd top-level para");
-  isa_ok($children[2], _pod5('Ordinary'), "...3rd top-level para");
-  isa_ok($children[3], _pod5('Region'),   "...4th top-level para");
-  isa_ok($children[4], _pod5('Ordinary'),   "...5th top-level para");
+  isa_ok($children[0], _pod5('Ordinary'), "...1st second-level para");
+  isa_ok($children[1], _pod5('Verbatim'), "...2nd second-level para");
+  isa_ok($children[2], _pod5('Ordinary'), "...3rd second-level para");
+  isa_ok($children[3], _pod5('Region'),   "...4th second-level para");
+  isa_ok($children[4], _pod5('Ordinary'), "...5th second-level para");
 }
 
 done_testing;
