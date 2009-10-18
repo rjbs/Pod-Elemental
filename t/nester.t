@@ -28,7 +28,33 @@ my $nester = Pod::Elemental::Transformer::Nester->new({
 
 $nester->transform_node($document);
 
-diag $document->as_debug_string;
+my @children = $document->children->flatten;
+
+is(@children, 3, "the nested document has 3 top-level elements"); 
+
+ok(s_flat($children[0]), "the first paragraph is a flat/text paragraph");
+
+ok(
+  $children[1]->isa('Pod::Elemental::Element::Nested'),
+  "the second paragraph is a nested command node",
+);
+
+{
+  my @children = $children[1]->children->flatten;
+  is(@children, 7, "...which has 7 children");
+}
+
+ok(
+  $children[2]->isa('Pod::Elemental::Element::Nested'),
+  "the third paragraph is a nested command node",
+);
+
+{
+  my @children = $children[2]->children->flatten;
+  is(@children, 1, "...which has 1 child");
+}
+
+eq_or_diff($document->as_pod_string, $str, "round-tripped okay");
 
 done_testing;
 
@@ -56,3 +82,5 @@ Ordinary Paragraph 2.1
 =head1 Header 1.2
 
 Ordinary Paragraph 2.1
+
+=cut
