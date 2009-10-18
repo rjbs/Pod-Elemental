@@ -42,7 +42,7 @@ sub s_command {
     my $para = shift;
     return unless $para->does('Pod::Elemental::Command');
     return 1 unless defined $command;
-    
+
     my $alts = ref $command ? $command : [ $command ];
     return $para->command eq $alts->any;
   };

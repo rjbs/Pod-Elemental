@@ -1,5 +1,11 @@
 Revision history for {{$dist->name}}
 
+0.092910  2009-10-18
+          transformers now operate on nodes, not documents
+          introduce Pod::Elemental::Transformer::Nester
+          introduce Pod::Elemental::Selectors
+          remove more dead code and modules (region-related, mostly)
+
 0.092901  2009-10-17
           improve vertical whitespace handling
           improve as_debug_string
