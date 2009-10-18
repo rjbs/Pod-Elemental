@@ -222,19 +222,17 @@ sub _collect_runs {
   return $paras;
 }
 
-sub transform_document {
-  my ($self, $document) = @_;
+sub transform_node {
+  my ($self, $node) = @_;
 
-  my $end_stripped     = $self->_strip_ends($document->children);
+  my $end_stripped     = $self->_strip_ends($node->children);
   my $region_collected = $self->_collect_regions($end_stripped);
   my $text_typed       = $self->_autotype_paras($region_collected, 1);
   my $text_collected   = $self->_collect_runs($text_typed);
 
-  my $new_doc = Pod::Elemental::Document->new({
-    children => $region_collected,
-  });
+  $node->children( $text_collected );
 
-  return $new_doc;
+  return $node;
 }
 
 1;

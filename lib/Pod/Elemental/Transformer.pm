@@ -1,17 +1,17 @@
 package Pod::Elemental::Transformer;
 use Moose::Role;
 use Moose::Autobox;
-# ABSTRACT: something that transforms a document tree into a new tree
+# ABSTRACT: something that transforms a node tree into a new tree
 
 use namespace::autoclean;
 
-requires 'transform_document';
+requires 'transform_node';
 
-=method transform_document
+=method transform_node
 
-  my $document = $nester->transform_document($document);
+  my $node = $nester->transform_node($node);
 
-This method must produce a new Document based on the input Document.
+This method alters the given node and returns it.
 
 =cut
 

@@ -18,7 +18,7 @@ sub _pod5 { "Pod::Elemental::Element::Pod5::$_[0]" }
 
 my $str = do { local $/; <DATA> };
 
-my $document = Pod::Elemental::Transformer::Pod5->transform_document(
+my $document = Pod::Elemental::Transformer::Pod5->transform_node(
   Pod::Elemental->read_string($str),
 );
 

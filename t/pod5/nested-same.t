@@ -23,7 +23,7 @@ my $document = Pod::Elemental::Document->new({
   children => $elements
 });
 
-$document = Pod::Elemental::Transformer::Pod5->transform_document($document);
+Pod::Elemental::Transformer::Pod5->transform_node($document);
 
 my $str = do { local $/; <DATA> };
 eq_or_diff($document->as_pod_string, $str, 'we got what we expected');

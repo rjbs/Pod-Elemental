@@ -16,19 +16,17 @@ my $content  = do {
   <$fh>;
 };
 
-my $doc_orig = Pod::Elemental->read_string($content);
+my $doc = Pod::Elemental->read_string($content);
 
 {
-  my @regions = grep { (ref $_) =~ /Region/ } @{ $doc_orig->children };
+  my @regions = grep { (ref $_) =~ /Region/ } @{ $doc->children };
   is(@regions, 0, "there are no regions prior to Pod5 transform");
 }
 
-my $doc_pod5 = Pod::Elemental::Transformer::Pod5->new->transform_document(
-  $doc_orig,
-);
+Pod::Elemental::Transformer::Pod5->new->transform_node($doc);
 
 {
-  my @regions = grep { (ref $_) =~ /Region/ } @{ $doc_pod5->children };
+  my @regions = grep { (ref $_) =~ /Region/ } @{ $doc->children };
   is(@regions, 1, "there is one (top-level) region post transformation");
 
   my @subregions = grep { (ref $_) =~ /Region/ } @{ $regions[0]->children };
