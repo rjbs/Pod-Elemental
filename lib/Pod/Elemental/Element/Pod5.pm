@@ -3,8 +3,9 @@ use namespace::autoclean;
 use Moose::Role;
 # ABSTRACT: a paragraph in a Pod document
 
-override as_pod_string => sub {
-  my $str = super;
+around as_pod_string => sub {
+  my ($orig, $self, @arg) = @_;
+  my $str = $self->$orig(@arg);
   "$str\n";
 };
 

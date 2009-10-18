@@ -28,14 +28,14 @@ sub as_pod_string {
 
     $string .= $self->children->map(sub { $_->as_pod_string })->join(q{});
 
-    $string .= sprintf "=%s %s\n\n",
+    $string .= sprintf "=%s %s\n",
       $self->closing_command,
       $colon . $self->format_name;
 
     return $string;
   }
 
-  return sprintf "=for %s%s\n",
+  return sprintf "=for %s%s",
     $colon . $self->format_name,
     ($content =~ /\S/ ? " $content" : "\n");
 }
