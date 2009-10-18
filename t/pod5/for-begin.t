@@ -15,6 +15,7 @@ my $for = Pod::Elemental::Element::Pod5::Region->new({
 
 my $for_expected = <<'END_FOR';
 =for test This is a test.
+
 END_FOR
 
 is(
@@ -40,6 +41,7 @@ my $begin_expected = <<'END_FOR';
 Ordinary paragraph.
 
 =end test
+
 END_FOR
 
 is(

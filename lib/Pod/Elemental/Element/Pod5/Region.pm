@@ -28,14 +28,14 @@ sub as_pod_string {
 
     $string .= $self->children->map(sub { $_->as_pod_string })->join(q{});
 
-    $string .= sprintf "\n=%s %s\n",
+    $string .= sprintf "=%s %s\n\n",
       $self->closing_command,
       $colon . $self->format_name;
 
     return $string;
   }
 
-  return sprintf "=for %s%s",
+  return sprintf "=for %s%s\n",
     $colon . $self->format_name,
     ($content =~ /\S/ ? " $content" : "\n");
 }
@@ -51,6 +51,8 @@ sub as_debug_string {
 
   return $string;
 }
+
+with 'Pod::Elemental::Element::Pod5';
 
 no Moose;
 1;

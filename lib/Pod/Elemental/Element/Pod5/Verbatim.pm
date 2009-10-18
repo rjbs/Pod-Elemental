@@ -1,6 +1,7 @@
 package Pod::Elemental::Element::Pod5::Verbatim;
 use Moose;
-with 'Pod::Elemental::Paragraph';
+extends 'Pod::Elemental::Element::Generic::Text';
+with    'Pod::Elemental::Element::Pod5';
 # ABSTRACT: a POD verbatim element
 
 use namespace::autoclean;
