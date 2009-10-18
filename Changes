@@ -1,5 +1,9 @@
 Revision history for {{$dist->name}}
 
+0.092901  2009-10-17
+          improve vertical whitespace handling
+          improve as_debug_string
+
 0.092900  2009-10-17
           Pod5 support is, at least tentatively, complete
 
