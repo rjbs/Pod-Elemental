@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 package Pod::Elemental::Selectors;
+# ABSTRACT: predicates for selecting elements
 
 use Moose::Autobox 0.10;
 

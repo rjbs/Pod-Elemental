@@ -2,6 +2,7 @@ package Pod::Elemental::Element::Nested;
 use Moose;
 extends 'Pod::Elemental::Element::Generic::Command';
 with 'Pod::Elemental::Node';
+# ABSTRACT: an element that is a command and a node
 
 use Moose::Autobox 0.10;
 
