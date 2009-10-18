@@ -1,6 +1,6 @@
 package Pod::Elemental::Element::Generic::Blank;
 use Moose;
-with 'Pod::Elemental::Paragraph';
+with 'Pod::Elemental::Flat';
 # ABSTRACT: a series of blank lines
 
 use namespace::autoclean;
