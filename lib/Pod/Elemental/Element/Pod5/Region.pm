@@ -52,7 +52,7 @@ sub as_debug_string {
   return $string;
 }
 
-with 'Pod::Elemental::Element::Pod5';
+with 'Pod::Elemental::Autoblank';
 
 no Moose;
 1;

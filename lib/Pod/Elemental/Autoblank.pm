@@ -1,7 +1,7 @@
-package Pod::Elemental::Element::Pod5;
+package Pod::Elemental::Autoblank;
 use namespace::autoclean;
 use Moose::Role;
-# ABSTRACT: a paragraph in a Pod document
+# ABSTRACT: a paragraph that always displays an extra blank line in Pod form
 
 around as_pod_string => sub {
   my ($orig, $self, @arg) = @_;

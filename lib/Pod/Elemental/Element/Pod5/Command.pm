@@ -3,7 +3,7 @@ use Moose;
 # ABSTRACT: a Pod5 =command element
 
 extends 'Pod::Elemental::Element::Generic::Command';
-with    'Pod::Elemental::Element::Pod5';
+with    'Pod::Elemental::Autoblank';
 
 use namespace::autoclean;
 
