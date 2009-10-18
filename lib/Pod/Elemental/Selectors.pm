@@ -5,20 +5,31 @@ package Pod::Elemental::Selectors;
 use Moose::Autobox 0.10;
 
 use Sub::Exporter -setup => {
-  exports => [ qw(s_command) ],
+  exports => [ qw(s_blank s_command) ],
 };
 
-sub s_command {
-  my ($command) = @_;
+sub s_blank {
+  my $code = sub {
+    my $para = shift;
+    return $para->isa('Pod::Elemental::Element::Generic::Blank');
+  };
 
-  return sub {
+  return @_ ? $code->(@_) : $code;
+}
+
+sub s_command {
+  my $command = shift;
+
+  my $code = sub {
     my $para = shift;
     return unless $para->does('Pod::Elemental::Command');
     return 1 unless defined $command;
     
     my $alts = ref $command ? $command : [ $command ];
     return $para->command eq $alts->any;
-  }
+  };
+
+  return @_ ? $code->(@_) : $code;
 }
 
 1;
