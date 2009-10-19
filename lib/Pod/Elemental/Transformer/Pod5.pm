@@ -71,8 +71,27 @@ sub _collect_regions {
   my @in_paras  = @$in_paras; # copy so we do not muck with input doc
   my @out_paras;
 
+  my $s_region = s_command([ qw(begin for) ]);
+  my $region_class = $self->_class('Region');
+
   PARA: while (my $para = shift @in_paras) {
-    @out_paras->push($para), next PARA unless s_command(begin => $para);
+    @out_paras->push($para), next PARA unless $s_region->($para);
+
+    if ($para->command eq 'for') {
+      my ($colon, $target, $content) = $self->_region_para_parts($para);
+
+      my $region = $region_class->new({
+        children    => [
+          $self->_gen_class('Text')->new({ content => $content }),
+        ],
+        format_name => $target,
+        is_pod      => $colon ? 1 : 0,
+        content     => "\n",
+      });
+
+      @out_paras->push($region);
+      next PARA;
+    }
 
     my ($colon, $target, $content) = $self->_region_para_parts($para);
 
@@ -81,7 +100,7 @@ sub _collect_regions {
     $region_paras->shift while s_blank($region_paras->[0]);
     $region_paras->pop   while s_blank($region_paras->[-1]);
 
-    my $region = $self->_class('Region')->new({
+    my $region = $region_class->new({
       children    => $self->_collect_regions($region_paras),
       format_name => $target,
       is_pod      => $colon ? 1 : 0,

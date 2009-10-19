@@ -42,31 +42,64 @@ has is_pod => (is => 'ro', isa => Bool, required => 1, default => 1);
 sub command         { 'begin' }
 sub closing_command { 'end' }
 
+sub _display_as_for {
+  my ($self) = @_;
+
+  return if $self->content =~ /\S/;
+  return if $self->children->length != 1;
+
+  my $child = $self->children->[0];
+
+  my $base = 'Pod::Elemental::Element::Pod5::';
+  return 1 if   $self->is_pod and $child->isa("${base}Data");
+  return 1 if ! $self->is_pod and $child->isa("${base}Ordinary");
+
+  return;
+}
+
 sub as_pod_string {
   my ($self) = @_;
 
-  my $content = $self->content;
+  if ($self->_display_as_for) {
+    return $self->__as_pod_string_for($self);
+  } else {
+    return $self->__as_pod_string_begin($self);
+  }
+}
 
+sub __as_pod_string_begin {
+  my ($self) = @_;
+
+  my $content = $self->content;
   my $colon = $self->is_pod ? ':' : '';
 
-  if ($self->children->length) {
-    my $string = sprintf "=%s %s%s\n",
-      $self->command,
-      $colon . $self->format_name,
-      ($content =~ /\S/ ? " $content" : "\n");
-
-    $string .= $self->children->map(sub { $_->as_pod_string })->join(q{});
-
-    $string .= sprintf "=%s %s\n",
-      $self->closing_command,
-      $colon . $self->format_name;
-
-    return $string;
-  }
-
-  return sprintf "=for %s%s",
+  my $string = sprintf "=%s %s%s\n",
+    $self->command,
     $colon . $self->format_name,
     ($content =~ /\S/ ? " $content" : "\n");
+
+  $string .= $self->children->map(sub { $_->as_pod_string })->join(q{});
+
+  $string .= sprintf "=%s %s\n",
+    $self->closing_command,
+    $colon . $self->format_name;
+
+  return $string;
+}
+
+sub __as_pod_string_for {
+  my ($self) = @_;
+
+  my $content = $self->content;
+  my $colon = $self->is_pod ? ':' : '';
+
+  my $string = sprintf "=for %s %s",
+    $colon . $self->format_name,
+    $self->children->map(sub { $_->as_pod_string })->join(q{});
+
+  chomp $string;
+
+  return $string;
 }
 
 sub as_debug_string {
