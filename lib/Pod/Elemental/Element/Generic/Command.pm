@@ -15,7 +15,7 @@ This attribute contains the name of the command, like C<head1> or C<encoding>.
 =cut
 
 has command => (
-  is  => 'ro',
+  is  => 'rw',
   isa => 'Str',
   required => 1,
 );
