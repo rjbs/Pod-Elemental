@@ -99,6 +99,8 @@ This is a big comment I have to write down.
 
 It's not important, but it goes on and on.
 
+=end comments
+
 =method quux
 
 Ordinary Paragraph 2.4
