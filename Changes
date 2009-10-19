@@ -1,5 +1,10 @@
 Revision history for {{$dist->name}}
 
+0.092920  2009-10-19
+          introduce Pod::Elemental::Transformer::Gatherer
+          refine the criteria for emitting =for instead of =begin/=end
+          pod5 transformer can convert =for into a Region
+
 0.092910  2009-10-18
           transformers now operate on nodes, not documents
           introduce Pod::Elemental::Transformer::Nester
