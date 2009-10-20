@@ -17,7 +17,8 @@ sub as_pod_string {
 
 sub as_debug_string {
   my ($self) = @_;
-  return sprintf '=%s', $self->command;
+  my $str = $self->_summarize_string($self->content);
+  return sprintf '=%s %s', $self->command, $str;
 }
 
 1;

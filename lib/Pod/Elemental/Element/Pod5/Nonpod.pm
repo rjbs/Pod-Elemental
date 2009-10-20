@@ -11,6 +11,4 @@ sub as_pod_string {
   return sprintf "=cut\n%s=pod\n", $self->content;
 }
 
-sub as_debug_string { '?5' }
-
 1;

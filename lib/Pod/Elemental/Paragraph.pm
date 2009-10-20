@@ -2,6 +2,9 @@ package Pod::Elemental::Paragraph;
 use namespace::autoclean;
 use Moose::Role;
 use Moose::Autobox;
+
+use Encode qw(encode);
+use String::Truncate qw(elide);
 # ABSTRACT: a paragraph in a Pod document
 
 =attr content
@@ -45,9 +48,16 @@ document.  Its exact output is likely to change over time.
 
 =cut
 
-sub _nl_replace {
+sub _summarize_string {
+  my ($self, $str, $length) = @_;
+  $length ||= 30;
+
   use utf8;
-  $_[1] =~ s/\n/␤/g;
+  chomp $str;
+  my $elided = elide($str, $length, { truncate => 'middle', marker => '…' });
+  $elided =~ tr/\n\t/␤␉/;
+
+  return encode('utf-8', $elided);
 }
 
 requires 'as_debug_string';

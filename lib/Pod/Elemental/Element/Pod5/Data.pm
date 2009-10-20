@@ -6,8 +6,4 @@ with    'Pod::Elemental::Autoblank';
 
 use namespace::autoclean;
 
-sub as_debug_string {
-  return '(Pod5 Data)';
-}
-
 1;

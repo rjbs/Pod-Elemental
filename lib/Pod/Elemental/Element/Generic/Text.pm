@@ -5,8 +5,4 @@ with 'Pod::Elemental::Flat';
 
 use namespace::autoclean;
 
-sub as_debug_string {
-  return '(Generic Text)';
-}
-
 1;
