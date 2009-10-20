@@ -50,6 +50,8 @@ $gatherer->container->children->grep(s_command('method'))->each_value(sub {
 
 print $document->as_debug_string, "\n\n";
 
+print $document->as_pod_string;
+
 __DATA__
 =pod
 
@@ -106,3 +108,26 @@ It's not important, but it goes on and on.
 Ordinary Paragraph 2.4
 
 =cut
+
+=method quince
+
+  my $method = $obj->quince(1,2,3);
+
+The above will work.
+
+The following will not:
+
+  my $method = $obj->quince(3,2,1);
+
+=cut
+
+sub quince {
+  my ($self, @args) = @_;
+  die unless increasing(@args);
+  return ordinality(@args);
+}
+
+=pod
+
+Is that clear?
+
