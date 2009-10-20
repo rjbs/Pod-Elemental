@@ -25,33 +25,32 @@ my $document = Pod::Elemental::Transformer::Pod5->transform_node(
 my @children = grep { ! $_->isa('Pod::Elemental::Element::Generic::Blank') }
                $document->children->flatten;
 
-is(@children, 3, "three top-level elements");
+is(@children, 4, "four top-level elements");
 
 isa_ok($children[0], _pod5('Ordinary'), "...first element");
-like($children[0]->content, qr{1\.1.+1\.2}s, "... ... contains both paras");
-
-isa_ok($children[1], _pod5('Region'), "...second element");
-
-isa_ok($children[2], _pod5('Ordinary'), "...third element");
+isa_ok($children[1], _pod5('Ordinary'), "...second element");
+isa_ok($children[2], _pod5('Region'),   "...third element");
+isa_ok($children[3], _pod5('Ordinary'), "...fourth element");
 
 {
   # first region contents
   my @children = grep { ! $_->isa('Pod::Elemental::Element::Generic::Blank') }
-                 $children[1]->children->flatten;
+                 $children[2]->children->flatten;
 
-  is(@children, 6, "top-level-contained region has six non-blanks");
+  is(@children, 7, "top-level-contained region has five non-blanks");
 
   isa_ok($children[0], _pod5('Ordinary'), "...1st second-level para");
-  isa_ok($children[1], _pod5('Verbatim'), "...2nd second-level para");
-  isa_ok($children[2], _pod5('Ordinary'), "...3rd second-level para");
-  isa_ok($children[3], _pod5('Verbatim'), "...4th second-level para");
-  isa_ok($children[4], _pod5('Region'),   "...5th second-level para");
-  isa_ok($children[5], _pod5('Ordinary'), "...6th second-level para");
+  isa_ok($children[1], _pod5('Ordinary'), "...2nd second-level para");
+  isa_ok($children[2], _pod5('Verbatim'), "...3rd second-level para");
+  isa_ok($children[3], _pod5('Ordinary'), "...4th second-level para");
+  isa_ok($children[4], _pod5('Verbatim'), "...5th second-level para");
+  isa_ok($children[5], _pod5('Region'),   "...6th second-level para");
+  isa_ok($children[6], _pod5('Ordinary'), "...7th second-level para");
 
   {
     # second region contents
     my @children = grep { ! $_->isa('Pod::Elemental::Element::Generic::Blank') }
-                   $children[4]->children->flatten;
+                   $children[5]->children->flatten;
 
     is(@children, 1, "second-level-contained region has one non-blank");
 

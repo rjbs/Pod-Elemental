@@ -167,7 +167,7 @@ sub _autotype_paras {
 sub __text_class {
   my ($self, $para) = @_;
 
-  for my $type (qw(Ordinary Verbatim Data)) {
+  for my $type (qw(Verbatim Data)) {
     my $class = $self->_class($type);
     return $class if $para->isa($class);
   }

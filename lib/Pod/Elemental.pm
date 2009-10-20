@@ -8,6 +8,7 @@ use Sub::Exporter::ForMethods ();
 use Mixin::Linewise::Readers
   { installer => Sub::Exporter::ForMethods::method_installer },
   -readers;
+
 use Moose::Autobox;
 use MooseX::Types;
 
