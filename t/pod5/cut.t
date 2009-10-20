@@ -30,6 +30,8 @@ Pod::Elemental::Transformer::Pod5->transform_node($document);
 
 diag $document->as_debug_string;
 
+diag $document->as_pod_string;
+
 __DATA__
 =pod
 
@@ -59,7 +61,7 @@ Nonpod 2.0
 
 =pod
 
-Nonpod 3.0
+Ordinary 1.3
 
 =head2
 

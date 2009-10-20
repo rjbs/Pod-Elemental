@@ -10,6 +10,7 @@ use namespace::autoclean;
 use Pod::Elemental::Document;
 use Pod::Elemental::Element::Pod5::Command;
 use Pod::Elemental::Element::Pod5::Data;
+use Pod::Elemental::Element::Pod5::Nonpod;
 use Pod::Elemental::Element::Pod5::Ordinary;
 use Pod::Elemental::Element::Pod5::Verbatim;
 use Pod::Elemental::Element::Pod5::Region;
@@ -68,7 +69,13 @@ sub __extract_region {
 sub _upgrade_nonpod {
   my ($self, $in_paras) = @_;
 
-  @$in_paras
+  $in_paras->each(sub {
+    my ($i, $para) = @_;
+    return unless $para->isa( $self->_gen_class('Nonpod') );
+    $in_paras->[ $i ] = $self->_class('Nonpod')->new({
+      content => $para->content,
+    });
+  });
 }
 
 sub _collect_regions {
@@ -223,6 +230,7 @@ sub transform_node {
   my ($self, $node) = @_;
 
   $self->_strip_markers($node->children);
+  $self->_upgrade_nonpod($node->children);
   $self->_collect_regions($node->children);
   $self->_autotype_paras($node->children, 1);
   $self->_collect_runs($node->children);
