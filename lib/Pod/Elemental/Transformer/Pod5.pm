@@ -118,10 +118,10 @@ sub _strip_ends {
 
   my @in_paras  = @$in_paras; # copy so we do not muck with input doc
 
-  @in_paras->shift while s_command('pod', $in_paras[0]);
-  @in_paras->shift while s_blank($in_paras[0]);
+  @in_paras->shift while @in_paras and s_command('pod', $in_paras[0]);
+  @in_paras->shift while @in_paras and s_blank($in_paras[0]);
 
-  @in_paras->pop   while s_command('cut', $in_paras[-1]);
+  @in_paras->pop   while @in_paras and s_command('cut', $in_paras[-1]);
 
   return \@in_paras;
 }
