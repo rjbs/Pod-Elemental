@@ -1,5 +1,9 @@
 Revision history for {{$dist->name}}
 
+0.092930  2009-10-20
+          introduce Pod5::Nonpod for self-=cut-enclosing nonpod sections
+          improved output of as_debug_string methods
+
 0.092920  2009-10-19
           introduce Pod::Elemental::Transformer::Gatherer
           refine the criteria for emitting =for instead of =begin/=end
