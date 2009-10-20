@@ -15,6 +15,12 @@ use Pod::Elemental::Objectifier;
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental::Document;
 
+my $string = do {
+  local $/;
+  open my $fh, '<', 't/eg/nested-begin.pod';
+  <$fh>;
+};
+
 my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-begin.pod')
                ->grep(sub { $_->{type} ne 'nonpod' });
 my $elements = Pod::Elemental::Objectifier->objectify_events($events);
@@ -25,42 +31,4 @@ my $document = Pod::Elemental::Document->new({
 
 Pod::Elemental::Transformer::Pod5->transform_node($document);
 
-my $str = do { local $/; <DATA> };
-eq_or_diff($document->as_pod_string, $str, 'we got what we expected');
-
-__DATA__
-=pod
-
-=head1 DESCRIPTION
-
-Foo.
-
-=begin outer
-
-=begin inner
-
-=head1 Inner!
-
-=over
-
-=item * one
-
-=back
-
-=begin inner
-
-=head1 Another!
-
-=end inner
-
-=head2 Welcome to my Second Head
-
-=end inner
-
-=head3 Finalizing
-
-=end outer
-
-Baz.
-
-=cut
+eq_or_diff($document->as_pod_string, $string, 'we got what we expected');
