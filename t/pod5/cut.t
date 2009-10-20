@@ -3,9 +3,9 @@ use strict;
 use warnings;
 
 # PURPOSE:
-# show that we can have a "foo" region inside another "foo" region
+# test that we eliminate =cut elements in favor of Pod5::Nonpod
 
-use Test::More tests => 1;
+use Test::More;
 use Test::Deep;
 use Test::Differences;
 
@@ -14,6 +14,7 @@ use Pod::Eventual::Simple;
 use Pod::Elemental::Objectifier;
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental::Document;
+use Pod::Elemental::Selectors '-all';
 
 my $str = do { local $/; <DATA> };
 
@@ -26,11 +27,31 @@ my $document = Pod::Elemental::Document->new({
 
 Pod::Elemental::Transformer::Pod5->transform_node($document);
 
-# eq_or_diff($document->as_pod_string, $str, 'we got what we expected');
+is($document->children->grep(s_command('cut'))->length, 0, 'no =cut cmds');
 
-diag $document->as_debug_string;
+# XXX: HORRIBLE grep predicate -- rjbs, 2009-10-20
+my @top_nonpod = $document->children->grep(sub { ref =~ /Nonpod$/ })->flatten;
 
-diag $document->as_pod_string;
+is(@top_nonpod, 1, "we have one top-level nonpod element");
+ok($top_nonpod[0] == $document->children->[5], "...it's the 6th element");
+like($top_nonpod[0]->content, qr{\QNonpod 2.0}, "...and the one we expect");
+
+my $region = $document->children->[2];
+isa_ok($region, 'Pod::Elemental::Element::Pod5::Region', '3rd element');
+{
+# XXX: HORRIBLE grep predicate -- rjbs, 2009-10-20
+  my @reg_nonpod = $region->children->grep(sub { ref =~ /Nonpod$/ })->flatten;
+
+  is(@reg_nonpod, 1, "we have one 2nd-level nonpod element");
+  ok($reg_nonpod[0] == $region->children->[1], "...it's the 2nd element");
+  like(
+    $reg_nonpod[0]->content,
+    qr{Nonpod 1.0\n.+Continued}sm,
+    "...and the one we expect",
+  );
+}
+
+done_testing;
 
 __DATA__
 =pod
@@ -63,7 +84,7 @@ Nonpod 2.0
 
 Ordinary 1.3
 
-=head2
+=head2 Subheader
 
 Complete.
 
