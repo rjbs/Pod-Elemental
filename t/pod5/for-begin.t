@@ -12,14 +12,14 @@ use Pod::Elemental::Element::Pod5::Ordinary;
 ### =begin with content (no children)
 my $begin_content = Pod::Elemental::Element::Pod5::Region->new({
   format_name => 'test',
-  is_pod      => 0,
+  is_pod      => 1,
   content     => "This is a test.\n",
 });
 
 my $begin_content_expected = <<'END_FOR';
-=begin test This is a test.
+=begin :test This is a test.
 
-=end test
+=end :test
 
 END_FOR
 
@@ -32,7 +32,7 @@ is(
 ### =begin with children (no content)
 my $begin_children = Pod::Elemental::Element::Pod5::Region->new({
   format_name => 'test',
-  is_pod      => 0,
+  is_pod      => 1,
   content     => "\n",
   children    => [
     Pod::Elemental::Element::Pod5::Ordinary->new({
@@ -45,13 +45,13 @@ my $begin_children = Pod::Elemental::Element::Pod5::Region->new({
 });
 
 my $begin_children_expected = <<'END_FOR';
-=begin test
+=begin :test
 
 Ordinary paragraph 1.
 
 Ordinary paragraph 2.
 
-=end test
+=end :test
 
 END_FOR
 
@@ -61,10 +61,42 @@ is(
   "Region with 2 children is =begin/=end",
 );
 
+### =begin nonpod with data para with newlines
+my $input_pod = <<'END_POD';
+=begin foo
+
+Data 1
+
+Data 1
+
+=end foo
+
+END_POD
+
+my $begin_2data = Pod::Elemental->read_string($input_pod);
+Pod::Elemental::Transformer::Pod5->transform_node($begin_2data);
+
+my $begin_2data_expected = <<'END_BEGIN';
+=begin foo
+
+Data 1
+
+Data 1
+
+=end foo
+
+END_BEGIN
+
+is(
+  $begin_2data->children->[0]->as_pod_string,
+  $begin_2data_expected,
+  "1 data para w/newlines",
+);
+
 ### =begin with children and content
 my $begin_both = Pod::Elemental::Element::Pod5::Region->new({
   format_name => 'test',
-  is_pod      => 0,
+  is_pod      => 1,
   content     => "This is a test.\n",
   children    => [
     Pod::Elemental::Element::Pod5::Ordinary->new({
@@ -74,11 +106,11 @@ my $begin_both = Pod::Elemental::Element::Pod5::Region->new({
 });
 
 my $begin_both_expected = <<'END_FOR';
-=begin test This is a test.
+=begin :test This is a test.
 
 Ordinary paragraph.
 
-=end test
+=end :test
 
 END_FOR
 
@@ -91,7 +123,7 @@ is(
 ### =for
 my $for = Pod::Elemental::Element::Pod5::Region->new({
   format_name => 'test',
-  is_pod      => 0,
+  is_pod      => 1,
   content     => "\n",
   children    => [
     Pod::Elemental::Element::Pod5::Ordinary->new({
@@ -101,7 +133,7 @@ my $for = Pod::Elemental::Element::Pod5::Region->new({
 });
 
 my $for_expected = <<'END_FOR';
-=for test Ordinary paragraph.
+=for :test Ordinary paragraph.
 
 END_FOR
 

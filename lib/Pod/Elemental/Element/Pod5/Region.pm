@@ -67,9 +67,11 @@ sub _display_as_for {
 
   my $child = $self->children->[0];
 
+  return if $child->content =~ /\n\S/;
+
   my $base = 'Pod::Elemental::Element::Pod5::';
-  return 1 if   $self->is_pod and $child->isa("${base}Data");
-  return 1 if ! $self->is_pod and $child->isa("${base}Ordinary");
+  return 1 if   $self->is_pod and $child->isa("${base}Ordinary");
+  return 1 if ! $self->is_pod and $child->isa("${base}Data");
 
   return;
 }

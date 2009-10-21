@@ -35,4 +35,3 @@ Pod::Elemental::Transformer::Pod5->new->transform_node($doc);
   my @subsub = grep { (ref $_) =~ /Region/ } @{ $subregions[0]->children };
   is(@subsub, 0, "there are no (3rd-level) region post transformation");
 }
-
