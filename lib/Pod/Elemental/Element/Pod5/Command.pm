@@ -5,6 +5,15 @@ use Moose;
 extends 'Pod::Elemental::Element::Generic::Command';
 with    'Pod::Elemental::Autoblank';
 
+=head1 OVERVIEW
+
+Pod5::Command elements are identical to
+L<Generic::Command|Pod::Elemental::Element::Generic::Command> elements, except
+that they incorporate L<Pod::Elemental::Autoblank>.  They represent command
+paragraphs in a Pod5 document.
+
+=cut
+
 use namespace::autoclean;
 
 1;

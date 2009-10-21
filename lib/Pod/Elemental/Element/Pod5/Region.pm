@@ -7,6 +7,23 @@ with qw(
   Pod::Elemental::Command
 );
 
+=head1 WARNING
+
+This class is somewhat sketchy and may be refactored somewhat in the future,
+specifically to refactor its similarities to
+L<Pod::Elemental::Element::Nested>.
+
+=head1 OVERVIEW
+
+A Pod5::Region element represents a region marked by a C<=for> command or a
+pair of C<=begin> and C<=end> commands.  It may have content of its own as well
+as child paragraphs.
+
+Its C<as_pod_string> method will emit either a C<=begin/=end>-enclosed string
+or a C<=for> command, based on whichever is permissible.
+
+=cut
+
 use Moose::Autobox;
 
 use Pod::Elemental::Types qw(FormatName);
@@ -14,10 +31,10 @@ use MooseX::Types::Moose qw(Bool);
 
 =attr format_name
 
-This is the format to which the document was targeted.  By default, this is
-undefined and the document is vanilla pod.  If this is set, the document may or
-may not be pod, and is intended for some other form of processor.  (See
-L</is_pod>.)
+This is the format to which the region was targeted.  
+
+B<Note!>  The format name should I<not> include the leading colon to indicate a
+pod paragraph.  For that, see C<L</is_pod>>.
 
 =cut
 
@@ -25,9 +42,9 @@ has format_name => (is => 'ro', isa => FormatName, required => 1);
 
 =attr is_pod
 
-If true, this document contains pod paragraphs, as opposed to data paragraphs.
-This will generally result from the document originating in a C<=begin> block
-with a colon-prefixed target identifier:
+If true, this region contains pod (ordinary or verbatim) paragraphs, as opposed
+to data paragraphs.  This will generally result from the document originating
+in a C<=begin> block with a colon-prefixed target identifier:
 
   =begin :html
 

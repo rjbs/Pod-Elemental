@@ -3,12 +3,51 @@ use Moose;
 use Moose::Autobox;
 # ABSTRACT: it turns a Pod::Eventual event stream into objects
 
+=head1 OVERVIEW
+
+An objectifier is responsible for taking the events produced by
+L<Pod::Eventual|Pod::Eventual> and converting them into objects that perform
+the Pod::Elemental::Paragraph role.
+
+In general, it does this by producing a sequence of element objects in the
+Pod::Elemental::Element::Generic namespace.
+
+=cut
+
 use namespace::autoclean;
 
 use Pod::Elemental::Element::Generic::Blank;
 use Pod::Elemental::Element::Generic::Command;
 use Pod::Elemental::Element::Generic::Nonpod;
 use Pod::Elemental::Element::Generic::Text;
+
+=method objectify_events
+
+  my $elements = $objectifier->objectify_events(\@events);
+
+Given an arrayref of Pod events, this method returns an arrayref of objects
+formed from the event stream.
+
+=cut
+
+sub objectify_events {
+  my ($self, $events) = @_;
+  return $events->map(sub {
+    Carp::croak("not a valid event") unless ref $_;
+
+    my $class = $self->element_class_for_event($_);
+
+    my %guts = (
+      content    => $_->{content},
+      start_line => $_->{start_line},
+
+      ($_->{type} eq 'command' ? (command => $_->{command}) : ()),
+    );
+
+    $class->new(\%guts);
+  });
+}
+
 
 =method element_class_for_event
 
@@ -33,33 +72,6 @@ sub element_class_for_event {
   Carp::croak "unknown event type: $t" unless exists $class_for->{ $t };
 
   return $class_for->{ $t };
-}
-
-=method objectify_events
-
-  my $elements = $objectifier->objectify_events(\@events);
-
-Given an arrayref of POD events, this method returns an arrayref of
-Pod::Elemental::Element objects formed from the event stream.
-
-=cut
-
-sub objectify_events {
-  my ($self, $events) = @_;
-  return $events->map(sub {
-    Carp::croak("not a valid event") unless ref $_;
-
-    my $class = $self->element_class_for_event($_);
-
-    my %guts = (
-      content    => $_->{content},
-      start_line => $_->{start_line},
-
-      ($_->{type} eq 'command' ? (command => $_->{command}) : ()),
-    );
-
-    $class->new(\%guts);
-  });
 }
 
 1;

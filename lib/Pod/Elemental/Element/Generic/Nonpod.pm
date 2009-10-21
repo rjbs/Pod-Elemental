@@ -5,4 +5,11 @@ with 'Pod::Elemental::Flat';
 
 use namespace::autoclean;
 
+=head1 OVERVIEW
+
+Generic::Nonpod elements are just like Generic::Text elements, but represent
+non-pod content found in the Pod stream.
+
+=cut
+
 1;

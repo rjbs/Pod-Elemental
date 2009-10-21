@@ -9,6 +9,16 @@ use namespace::autoclean;
 use Pod::Elemental::Element::Generic::Blank;
 use String::RewritePrefix;
 
+=head1 OVERVIEW
+
+Pod::Elemental::Document is a container for Pod documents.  It performs
+L<Pod::Elemental::Node> but I<not> L<Pod::Elemental::Paragraph>.
+
+Documents are used almost exclusively to give a small amount of behavior to
+arrayrefs of paragraphs, and have few methods of their own.
+
+=cut
+
 sub _expand_name {
   my ($self, $name) = @_;
 

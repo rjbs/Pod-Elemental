@@ -6,7 +6,11 @@ use namespace::autoclean;
 
 use Moose::Autobox;
 
-sub type { 'command' }
+=head1 OVERVIEW
+
+Generic::Command elements are paragraph elements implementing the
+Pod::Elemental::Command role.  They provide the command method by implementing
+a read/write command attribute.
 
 =attr command
 

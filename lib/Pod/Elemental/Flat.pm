@@ -4,6 +4,14 @@ use Moose::Role;
 
 use namespace::autoclean;
 
+=head1 OVERVIEW
+
+Pod::Elemental::Flat is a role that is included to indicate that a class
+represents a Pod paragraph that will have no children, and represents only its
+own content.  Generally it is used for text paragraphs.
+
+=cut
+
 with 'Pod::Elemental::Paragraph';
 excludes 'Pod::Elemental::Node';
 
