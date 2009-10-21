@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More tests => 9;
 
 use Pod::Elemental;
 use Pod::Elemental::Transformer::Pod5;
