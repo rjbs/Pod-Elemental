@@ -1,5 +1,10 @@
 Revision history for {{$dist->name}}
 
+0.092940  2009-10-21
+          relatively extensive documentation added
+          improve behavior of =for/=begin/=end stringification
+          no longer convert many subsequent Pod5::Ordinary paras into one
+
 0.092930  2009-10-20
           introduce Pod5::Nonpod for self-=cut-enclosing nonpod sections
           improved output of as_debug_string methods
