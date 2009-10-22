@@ -1,5 +1,8 @@
 Revision history for {{$dist->name}}
 
+0.092941  2009-10-21
+          Pod5 elements now "Autochomp" so their content has no trailing newlin
+
 0.092940  2009-10-21
           relatively extensive documentation added
           improve behavior of =for/=begin/=end stringification
