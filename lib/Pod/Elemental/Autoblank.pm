@@ -16,7 +16,7 @@ That's it!
 around as_pod_string => sub {
   my ($orig, $self, @arg) = @_;
   my $str = $self->$orig(@arg);
-  "$str\n";
+  "$str\n\n";
 };
 
 1;

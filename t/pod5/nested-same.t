@@ -32,3 +32,4 @@ my $document = Pod::Elemental::Document->new({
 Pod::Elemental::Transformer::Pod5->transform_node($document);
 
 eq_or_diff($document->as_pod_string, $string, 'we got what we expected');
+

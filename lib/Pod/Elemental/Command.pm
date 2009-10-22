@@ -23,7 +23,7 @@ sub as_pod_string {
 
   my $content = $self->content;
 
-  sprintf "=%s%s", $self->command, ($content =~ /\S/ ? " $content" : "\n");
+  sprintf "=%s%s", $self->command, ($content =~ /\S/ ? " $content" : $content);
 }
 
 sub as_debug_string {

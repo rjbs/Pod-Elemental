@@ -2,6 +2,7 @@ package Pod::Elemental::Element::Pod5::Verbatim;
 use Moose;
 extends 'Pod::Elemental::Element::Generic::Text';
 with    'Pod::Elemental::Autoblank';
+with    'Pod::Elemental::Autochomp';
 # ABSTRACT: a POD verbatim element
 
 =head1 OVERVIEW
