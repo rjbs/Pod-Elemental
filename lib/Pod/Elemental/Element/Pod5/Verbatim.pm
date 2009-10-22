@@ -3,7 +3,7 @@ use Moose;
 extends 'Pod::Elemental::Element::Generic::Text';
 with    'Pod::Elemental::Autoblank';
 with    'Pod::Elemental::Autochomp';
-# ABSTRACT: a POD verbatim element
+# ABSTRACT: a Pod verbatim paragraph
 
 =head1 OVERVIEW
 
