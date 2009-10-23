@@ -36,7 +36,7 @@ So, given this document:
 
 ...and this nester...
 
-  my $nester = Pod::Elemental::Transformer::Gatherer->new({
+  my $gatherer = Pod::Elemental::Transformer::Gatherer->new({
     gather_selector => s_command( [ qw(over item back) ] ),
     container       => Pod::Elemental::Element::Pod5::Command->new({
       command => 'head1',
