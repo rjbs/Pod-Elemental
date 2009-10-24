@@ -1,5 +1,9 @@
 Revision history for {{$dist->name}}
 
+0.092970  2009-10-24
+          fix the loss of newlines when combining verbatim paragraphs
+          minor documentation fixes
+
 0.092941  2009-10-21
           Pod5 elements now "Autochomp" so their content has no trailing newlin
 
