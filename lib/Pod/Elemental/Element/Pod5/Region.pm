@@ -105,7 +105,7 @@ sub __as_pod_string_begin {
 
   $string .= $self->children->map(sub { $_->as_pod_string })->join(q{});
 
-  $string .= "\n"
+  $string .= "\n\n"
     if  $self->children->length
     and $self->children->[-1]->isa( 'Pod::Elemental::Element::Pod5::Data');
     # Pod5::$self->is_pod; # XXX: HACK!! -- rjbs, 2009-10-21

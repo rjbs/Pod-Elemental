@@ -229,11 +229,7 @@ sub _collect_runs {
 
     my @to_collect = ($start);
     NEXT: for my $next ($start+1 .. $#$paras) {
-      if (
-        $paras->[ $next ]->isa($class)
-        or
-        s_blank($paras->[ $next ])
-      ) {
+      if ($paras->[ $next ]->isa($class) or s_blank($paras->[ $next ])) {
         push @to_collect, $next;
         next NEXT;
       }
@@ -247,8 +243,8 @@ sub _collect_runs {
 
     my $new_content = $paras
                     ->slice(\@to_collect)
-                    ->map(sub { $_->content })
-                    ->join(q{});
+                    ->map(sub { $_ = $_->content; chomp; $_ })
+                    ->join(qq{\n});
 
     splice @$paras, $start, scalar(@to_collect), $class->new({
       content => $new_content,
