@@ -70,7 +70,7 @@ sub _region_para_parts {
     (\S+)
     (?:\s+(.+))?
     (\s+)\z
-  /x;
+  /xsm;
 
   confess("=begin cannot be parsed") unless defined $target;
 
