@@ -1,5 +1,8 @@
 Revision history for {{$dist->name}}
 
+{{$NEXT}}
+          emit a =begin/=end pair instead of =for in more cases where required
+
 0.093000  2009-10-27
           correct a regex is format region parsing to allow multiline =for
 

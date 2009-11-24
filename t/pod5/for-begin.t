@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 9;
+use Test::More tests => 10;
 
 use Pod::Elemental;
 use Pod::Elemental::Transformer::Pod5;
@@ -119,6 +119,37 @@ is(
   $begin_both_expected,
   "Region with content & children is =begin/=end",
 );
+
+### a region with para with blanks should become =begin, not =for
+{
+  my $begin_with_content_blanks = Pod::Elemental::Element::Pod5::Region->new({
+    format_name => 'test',
+    is_pod      => 0,
+    content     => "\n",
+    children    => [
+      Pod::Elemental::Element::Pod5::Data->new({
+        content => "Ordinary\n \n paragraph.",
+      }),
+    ],
+  });
+
+  my $expected = <<'END_FOR';
+=begin test
+
+Ordinary
+ 
+ paragraph.
+
+=end test
+
+END_FOR
+
+  is(
+    $begin_with_content_blanks->as_pod_string,
+    $expected,
+    "region with 1 child that has blanks is =begin",
+  );
+}
 
 ### =for
 my $for = Pod::Elemental::Element::Pod5::Region->new({
