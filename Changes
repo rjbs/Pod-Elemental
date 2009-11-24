@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.093280  2009-11-24 18:37:04 America/New_York
           emit a =begin/=end pair instead of =for in more cases where required
 
 0.093000  2009-10-27
