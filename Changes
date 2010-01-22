@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.100220  2010-01-22 10:31:46 America/New_York
           Autochomp workaround for the loss of "has '+attr'" in roles in new
           Moose
 
