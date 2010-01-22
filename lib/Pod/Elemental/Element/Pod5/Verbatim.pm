@@ -5,6 +5,11 @@ with    'Pod::Elemental::Autoblank';
 with    'Pod::Elemental::Autochomp';
 # ABSTRACT: a Pod verbatim paragraph
 
+# BEGIN Autochomp Replacement
+use Pod::Elemental::Types qw(ChompedString);
+has '+content' => (coerce => 1, isa => ChompedString);
+# END   Autochomp Replacement
+
 =head1 OVERVIEW
 
 Pod5::Verbatim elements represent "verbatim" paragraphs of text.  These are

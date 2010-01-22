@@ -12,9 +12,9 @@ transformer.
 
 =cut
 
-has '+content' => (
-  coerce => 1,
-  isa    => ChompedString,
-);
+# has '+content' => (
+#   coerce => 1,
+#   isa    => ChompedString,
+# );
 
 1;

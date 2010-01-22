@@ -9,6 +9,11 @@ use namespace::autoclean;
 
 use Moose::Autobox 0.10;
 
+# BEGIN Autochomp Replacement
+use Pod::Elemental::Types qw(ChompedString);
+has '+content' => (coerce => 1, isa => ChompedString);
+# END   Autochomp Replacement
+
 =head1 WARNING
 
 This class is somewhat sketchy and may be refactored somewhat in the future,

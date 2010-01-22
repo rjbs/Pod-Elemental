@@ -150,5 +150,10 @@ sub as_debug_string {
 with 'Pod::Elemental::Autoblank';
 with 'Pod::Elemental::Autochomp';
 
+# BEGIN Autochomp Replacement
+use Pod::Elemental::Types qw(ChompedString);
+has '+content' => (coerce => 1, isa => ChompedString);
+# END   Autochomp Replacement
+
 no Moose;
 1;

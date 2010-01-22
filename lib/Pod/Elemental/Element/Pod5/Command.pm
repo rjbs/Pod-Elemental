@@ -6,6 +6,12 @@ extends 'Pod::Elemental::Element::Generic::Command';
 with    'Pod::Elemental::Autoblank';
 with    'Pod::Elemental::Autochomp';
 
+use Pod::Elemental::Types qw(ChompedString);
+has '+content' => (
+  coerce => 1,
+  isa    => ChompedString,
+);
+
 =head1 OVERVIEW
 
 Pod5::Command elements are identical to
