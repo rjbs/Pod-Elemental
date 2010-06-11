@@ -28,6 +28,8 @@ my $flat_lol = [
       [ (undef)  => "Data 3"  ],
     [ '=end'    => 'nonpod_region' ],
   [ '=end'    => ':pod_region'   ],
+  [ '=begin' => ':empty' ],
+  [ '=end'   => ':empty' ],
 ];
 
 {

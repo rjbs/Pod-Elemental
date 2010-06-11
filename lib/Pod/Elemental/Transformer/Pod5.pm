@@ -150,7 +150,7 @@ sub _collect_regions {
     my $region_paras = $self->__extract_region("$colon$target", $in_paras);
 
     $region_paras->shift while s_blank($region_paras->[0]);
-    $region_paras->pop   while s_blank($region_paras->[-1]);
+    $region_paras->pop   while @$region_paras && s_blank($region_paras->[-1]);
 
     my $region = $region_class->new({
       children    => $self->_collect_regions($region_paras),
