@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          avoid a deprecation in Moose 1.10 by using new-style "-excludes"
 
 0.101620  2010-06-11 19:39:05 America/New_York
           no longer throws exception on empty regions (RT #57834)
