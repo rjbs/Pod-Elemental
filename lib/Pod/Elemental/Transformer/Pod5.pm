@@ -253,12 +253,25 @@ sub _collect_runs {
     redo PASS;
   }
 
-  @$paras = grep { not s_blank($_) } @$paras;
+  my @out;
+  PASS: for (my $i = 0; $i < @$paras; $i++) {
+    my $this = $paras->[$i];
+    push @out, $this;
+
+    while ($paras->[$i+1] and s_blank($paras->[$i+1])) {
+      $i++;
+      next unless $this->isa( $self->_class('Data') );
+      $this->content( $this->content . $paras->[$i]->content );
+    }
+  }
+
+  # @out = grep { not s_blank($_) } @$paras;
 
   # I really don't feel bad about rewriting in place by the time we get here.
   # These are private methods, and I know the consequence of calling them.
   # Nobody else should be.  So there.  -- rjbs, 2009-10-17
-  return $paras;
+  @$paras = @out;
+  return \@out;
 }
 
 sub transform_node {
