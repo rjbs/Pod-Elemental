@@ -179,7 +179,7 @@ sub _autotype_paras {
 
   $paras->each(sub {
     my ($i, $elem) = @_;
-    
+
     if ($elem->isa( $self->_gen_class('Text') )) {
       my $class = $is_pod
                 ? $elem->content =~ /\A\s/
@@ -218,7 +218,7 @@ sub _collect_runs {
   my ($self, $paras) = @_;
 
   $paras->grep(sub { $_->isa( $self->_class('Region') ) })->each_value(sub {
-    $self->_collect_runs($_->children) 
+    $self->_collect_runs($_->children)
   });
 
   PASS: for my $start (0 .. $#$paras) {
@@ -233,7 +233,7 @@ sub _collect_runs {
         push @to_collect, $next;
         next NEXT;
       }
-      
+
       last NEXT;
     }
 
