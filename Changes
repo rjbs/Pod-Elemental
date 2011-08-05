@@ -2,6 +2,10 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.102361  2011-08-05 10:32:02 America/New_York
+          the Pod5 transformer no longer loses vertical whitespace after Data
+          paragraphs
+
 0.102360  2010-08-24 07:52:09 America/New_York
           avoid a deprecation in Moose 1.10 by using new-style "-excludes"
 
