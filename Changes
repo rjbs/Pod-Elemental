@@ -1,6 +1,9 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          do not fail to nestify elements at the end of a sequence just because
+          they couldn't get any new children; it can break things down the
+          line; q.v., [rt.cpan.org #69189]
 
 0.102361  2011-08-05 10:32:02 America/New_York
           the Pod5 transformer no longer loses vertical whitespace after Data
