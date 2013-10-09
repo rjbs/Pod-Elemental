@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          update bugtracker and repo metadata
 
 0.102362  2012-05-04 22:42:29 America/New_York
           do not fail to nestify elements at the end of a sequence just because

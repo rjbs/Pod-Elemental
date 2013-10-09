@@ -9,10 +9,10 @@ use Mixin::Linewise::Readers
   { installer => Sub::Exporter::ForMethods::method_installer },
   -readers;
 
-use Moose::Autobox;
+use Moose::Autobox 0.10; # each_ iterators
 use MooseX::Types;
 
-use Pod::Eventual::Simple;
+use Pod::Eventual::Simple 0.004; # nonpod events
 use Pod::Elemental::Document;
 use Pod::Elemental::Transformer::Pod5;
 use Pod::Elemental::Objectifier;
