@@ -1,7 +1,8 @@
 package Pod::Elemental::Element::Generic::Blank;
+# ABSTRACT: a series of blank lines
+
 use Moose;
 with 'Pod::Elemental::Flat';
-# ABSTRACT: a series of blank lines
 
 =head1 OVERVIEW
 

@@ -1,11 +1,12 @@
 package Pod::Elemental::Paragraph;
+# ABSTRACT: a paragraph in a Pod document
+
 use namespace::autoclean;
 use Moose::Role;
 use Moose::Autobox;
 
 use Encode qw(encode);
 use String::Truncate qw(elide);
-# ABSTRACT: a paragraph in a Pod document
 
 =head1 OVERVIEW
 

@@ -1,7 +1,8 @@
 package Pod::Elemental::Transformer::Gatherer;
+# ABSTRACT: gather related paragraphs under a shared header
+
 use Moose;
 with 'Pod::Elemental::Transformer';
-# ABSTRACT: gather related paragraphs under a shared header
 
 use namespace::autoclean;
 

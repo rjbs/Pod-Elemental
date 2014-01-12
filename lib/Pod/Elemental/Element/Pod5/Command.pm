@@ -1,6 +1,7 @@
 package Pod::Elemental::Element::Pod5::Command;
-use Moose;
 # ABSTRACT: a Pod5 =command element
+
+use Moose;
 
 extends 'Pod::Elemental::Element::Generic::Command';
 with    'Pod::Elemental::Autoblank';

@@ -1,6 +1,7 @@
 package Pod::Elemental;
-use Moose;
 # ABSTRACT: work with nestable Pod elements
+
+use Moose;
 
 use namespace::autoclean;
 

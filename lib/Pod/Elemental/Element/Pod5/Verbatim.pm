@@ -1,9 +1,10 @@
 package Pod::Elemental::Element::Pod5::Verbatim;
+# ABSTRACT: a Pod verbatim paragraph
+
 use Moose;
 extends 'Pod::Elemental::Element::Generic::Text';
 with    'Pod::Elemental::Autoblank';
 with    'Pod::Elemental::Autochomp';
-# ABSTRACT: a Pod verbatim paragraph
 
 # BEGIN Autochomp Replacement
 use Pod::Elemental::Types qw(ChompedString);

@@ -1,7 +1,8 @@
 package Pod::Elemental::Autochomp;
+# ABSTRACT: a paragraph that chomps set content
+
 use namespace::autoclean;
 use Moose::Role;
-# ABSTRACT: a paragraph that chomps set content
 
 use Pod::Elemental::Types qw(ChompedString);
 

@@ -1,9 +1,10 @@
 package Pod::Elemental::Element::Nested;
+# ABSTRACT: an element that is a command and a node
+
 use Moose;
 extends 'Pod::Elemental::Element::Generic::Command';
 with 'Pod::Elemental::Node';
 with 'Pod::Elemental::Autochomp';
-# ABSTRACT: an element that is a command and a node
 
 use namespace::autoclean;
 

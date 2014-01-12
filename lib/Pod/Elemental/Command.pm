@@ -1,7 +1,8 @@
 package Pod::Elemental::Command;
+# ABSTRACT: a =command paragraph
+
 use Moose::Role 0.90;
 with 'Pod::Elemental::Paragraph' => { -excludes => [ 'as_pod_string' ] };
-# ABSTRACT: a =command paragraph
 
 =head1 OVERVIEW
 

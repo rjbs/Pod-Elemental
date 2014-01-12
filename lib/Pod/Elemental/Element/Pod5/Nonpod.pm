@@ -1,8 +1,9 @@
 package Pod::Elemental::Element::Pod5::Nonpod;
+# ABSTRACT: a non-pod element in a Pod document
+
 use Moose;
 with 'Pod::Elemental::Flat';
 with 'Pod::Elemental::Autoblank';
-# ABSTRACT: a non-pod element in a Pod document
 
 =head1 OVERVIEW
 

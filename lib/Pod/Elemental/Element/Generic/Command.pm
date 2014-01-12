@@ -1,6 +1,7 @@
 package Pod::Elemental::Element::Generic::Command;
-use Moose;
 # ABSTRACT: a Pod =command element
+
+use Moose;
 
 use namespace::autoclean;
 

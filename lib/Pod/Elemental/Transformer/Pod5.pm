@@ -1,7 +1,8 @@
 package Pod::Elemental::Transformer::Pod5;
+# ABSTRACT: the default, minimal semantics of Perl5's pod element hierarchy
+
 use Moose;
 with 'Pod::Elemental::Transformer';
-# ABSTRACT: the default, minimal semantics of Perl5's pod element hierarchy
 
 =head1 SYNOPSIS
 

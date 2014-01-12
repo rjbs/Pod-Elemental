@@ -1,7 +1,8 @@
 package Pod::Elemental::Document;
+# ABSTRACT: a pod document
+
 use Moose;
 with 'Pod::Elemental::Node';
-# ABSTRACT: a pod document
 
 use Moose::Autobox;
 use namespace::autoclean;

@@ -1,7 +1,8 @@
 package Pod::Elemental::Element::Pod5::Data;
+# ABSTRACT: a Pod data paragraph
+
 use Moose;
 extends 'Pod::Elemental::Element::Generic::Text';
-# ABSTRACT: a Pod data paragraph
 
 =head1 OVERVIEW
 

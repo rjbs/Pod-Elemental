@@ -1,7 +1,8 @@
 package Pod::Elemental::Autoblank;
+# ABSTRACT: a paragraph that always displays an extra blank line in Pod form
+
 use namespace::autoclean;
 use Moose::Role;
-# ABSTRACT: a paragraph that always displays an extra blank line in Pod form
 
 =head1 OVERVIEW
 

@@ -1,6 +1,7 @@
 package Pod::Elemental::Flat;
-use Moose::Role;
 # ABSTRACT: a content-only pod paragraph
+
+use Moose::Role;
 
 use namespace::autoclean;
 

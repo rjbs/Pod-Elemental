@@ -1,6 +1,7 @@
 package Pod::Elemental::Node;
-use Moose::Role;
 # ABSTRACT: a thing with Pod::Elemental::Nodes as children
+
+use Moose::Role;
 
 use namespace::autoclean;
 

@@ -1,7 +1,8 @@
 package Pod::Elemental::Transformer::Nester;
+# ABSTRACT: group the document into sections
+
 use Moose;
 with 'Pod::Elemental::Transformer';
-# ABSTRACT: group the document into sections
 
 =head1 OVERVIEW
 

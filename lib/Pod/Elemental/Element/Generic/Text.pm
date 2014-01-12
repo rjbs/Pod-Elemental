@@ -1,7 +1,8 @@
 package Pod::Elemental::Element::Generic::Text;
+# ABSTRACT: a Pod text or verbatim element
+
 use Moose;
 with 'Pod::Elemental::Flat';
-# ABSTRACT: a Pod text or verbatim element
 
 use namespace::autoclean;
 

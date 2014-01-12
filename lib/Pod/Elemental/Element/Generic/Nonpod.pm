@@ -1,7 +1,8 @@
 package Pod::Elemental::Element::Generic::Nonpod;
+# ABSTRACT: a non-pod element in a Pod document
+
 use Moose;
 with 'Pod::Elemental::Flat';
-# ABSTRACT: a non-pod element in a Pod document
 
 use namespace::autoclean;
 
