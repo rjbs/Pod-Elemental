@@ -2,6 +2,10 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.103000  2014-01-12 09:03:06-05:00 America/New_York
+          Pod::Elemental::Document only adds leading =pod or trailing =cut if
+          they are not already present
+
 0.102364  2013-11-28 07:27:08 America/New_York
           stop using deprecated Class::MOP::load_class
 
