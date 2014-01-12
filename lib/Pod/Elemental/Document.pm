@@ -35,10 +35,12 @@ sub _expand_name {
 sub as_pod_string {
   my ($self) = @_;
 
-  join q{},
-    "=pod\n\n",
-    $self->children->map(sub { $_->as_pod_string })->flatten,
-    "=cut\n";
+  my $str = join q{}, $self->children->map(sub { $_->as_pod_string })->flatten;
+
+  $str = "=pod\n\n$str" unless $str =~ /\A=pod\n/;
+  $str .= "=cut\n" unless $str =~ /=cut\n+\z/;
+
+  return $str;
 }
 
 sub as_debug_string {
