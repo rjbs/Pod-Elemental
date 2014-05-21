@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - load Class::Load, which older Moose does not automatically load
 
 0.103000  2014-01-12 09:03:06-05:00 America/New_York
           Pod::Elemental::Document only adds leading =pod or trailing =cut if

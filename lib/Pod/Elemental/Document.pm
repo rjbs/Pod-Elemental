@@ -4,6 +4,7 @@ package Pod::Elemental::Document;
 use Moose;
 with 'Pod::Elemental::Node';
 
+use Class::Load ();
 use Moose::Autobox;
 use namespace::autoclean;
 
