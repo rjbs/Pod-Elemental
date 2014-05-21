@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.103001  2014-05-20 20:45:43-04:00 America/New_York
         - load Class::Load, which older Moose does not automatically load
 
 0.103000  2014-01-12 09:03:06-05:00 America/New_York
