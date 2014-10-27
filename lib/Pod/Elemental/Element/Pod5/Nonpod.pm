@@ -29,4 +29,6 @@ sub as_pod_string {
   return sprintf "=cut\n%s=pod\n", $self->content;
 }
 
+__PACKAGE__->meta->make_immutable;
+
 1;

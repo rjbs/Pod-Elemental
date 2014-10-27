@@ -156,5 +156,6 @@ use Pod::Elemental::Types qw(ChompedString);
 has '+content' => (coerce => 1, isa => ChompedString);
 # END   Autochomp Replacement
 
+__PACKAGE__->meta->make_immutable;
 no Moose;
 1;

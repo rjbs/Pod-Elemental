@@ -17,4 +17,6 @@ use namespace::autoclean;
 
 sub as_debug_string { '|' }
 
+__PACKAGE__->meta->make_immutable;
+
 1;

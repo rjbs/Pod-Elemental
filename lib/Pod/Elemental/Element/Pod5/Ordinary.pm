@@ -20,4 +20,6 @@ Pod document that's gone through the Pod5 translator.
 
 use namespace::autoclean;
 
+__PACKAGE__->meta->make_immutable;
+
 1;

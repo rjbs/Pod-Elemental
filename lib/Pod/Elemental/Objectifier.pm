@@ -75,4 +75,6 @@ sub element_class_for_event {
   return $class_for->{ $t };
 }
 
+__PACKAGE__->meta->make_immutable;
+
 1;
