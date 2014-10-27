@@ -15,4 +15,6 @@ data element contained in them.
 
 use namespace::autoclean;
 
+__PACKAGE__->meta->make_immutable;
+
 1;

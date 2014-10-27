@@ -287,4 +287,6 @@ sub transform_node {
   return $node;
 }
 
+__PACKAGE__->meta->make_immutable;
+
 1;
