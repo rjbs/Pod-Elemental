@@ -13,4 +13,6 @@ non-pod content found in the Pod stream.
 
 =cut
 
+__PACKAGE__->meta->make_immutable;
+
 1;

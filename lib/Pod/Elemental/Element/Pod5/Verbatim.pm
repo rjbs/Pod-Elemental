@@ -26,4 +26,6 @@ following paragraph is a verbatim paragraph:
 
 use namespace::autoclean;
 
+__PACKAGE__->meta->make_immutable;
+
 1;

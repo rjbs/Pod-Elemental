@@ -24,4 +24,6 @@ paragraphs in a Pod5 document.
 
 use namespace::autoclean;
 
+__PACKAGE__->meta->make_immutable;
+
 1;

@@ -111,4 +111,6 @@ sub new_from_lol {
   return $self;
 }
 
+__PACKAGE__->meta->make_immutable;
+
 1;

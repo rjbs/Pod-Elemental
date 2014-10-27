@@ -27,4 +27,6 @@ has command => (
 
 with 'Pod::Elemental::Command';
 
+__PACKAGE__->meta->make_immutable;
+
 1;

@@ -44,4 +44,6 @@ override as_pod_string => sub {
   return $string;
 };
 
+__PACKAGE__->meta->make_immutable;
+
 1;
