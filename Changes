@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.103002  2014-10-27 21:12:54-04:00 America/New_York
         - make classes immutable to improve runtime speed
 
 0.103001  2014-05-20 20:45:43-04:00 America/New_York
