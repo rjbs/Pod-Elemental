@@ -1,7 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
-        - make things immutable to speed up dist zilla
+        - make classes immutable to improve runtime speed
 
 0.103001  2014-05-20 20:45:43-04:00 America/New_York
         - load Class::Load, which older Moose does not automatically load
