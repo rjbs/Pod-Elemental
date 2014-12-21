@@ -9,7 +9,6 @@ use Test::More tests => 1;
 use Test::Deep;
 use Test::Differences;
 
-use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental::Objectifier;
 use Pod::Elemental::Transformer::Pod5;
@@ -21,9 +20,8 @@ my $string = do {
   <$fh>;
 };
 
-my $events   = Pod::Eventual::Simple->read_file('t/eg/nested-begin.pod')
-               ->grep(sub { $_->{type} ne 'nonpod' });
-my $elements = Pod::Elemental::Objectifier->objectify_events($events);
+my @events   = grep { $_->{type} ne 'nonpod' } @{ Pod::Eventual::Simple->read_file('t/eg/nested-begin.pod') };
+my $elements = Pod::Elemental::Objectifier->objectify_events(\@events);
 
 my $document = Pod::Elemental::Document->new({
   children => $elements

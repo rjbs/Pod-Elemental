@@ -9,7 +9,6 @@ use warnings;
 use Test::More;
 use Test::Differences;
 
-use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental;
 use Pod::Elemental::Transformer::Pod5;
@@ -23,7 +22,7 @@ my $document = Pod::Elemental::Transformer::Pod5->transform_node(
 );
 
 my @children = grep { ! $_->isa('Pod::Elemental::Element::Generic::Blank') }
-               $document->children->flatten;
+               @{ $document->children };
 
 is(@children, 2, "two top-level elements");
 isa_ok($children[0], _pod5('Ordinary'), "...first top-level text");
@@ -32,7 +31,7 @@ isa_ok($children[1], _pod5('Region'),   "...second top-level para");
 {
   # region contents
   my @children = grep { ! $_->isa('Pod::Elemental::Element::Generic::Blank') }
-                 $children[1]->children->flatten;
+                 @{ $children[1]->children };
 
   is(@children, 5, "top-level-contained region has five non-blanks");
 

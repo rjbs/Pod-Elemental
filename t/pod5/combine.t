@@ -9,7 +9,6 @@ use warnings;
 use Test::More;
 use Test::Differences;
 
-use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental;
 use Pod::Elemental::Transformer::Pod5;
@@ -23,7 +22,7 @@ my $document = Pod::Elemental::Transformer::Pod5->transform_node(
 );
 
 my @children = grep { ! $_->isa('Pod::Elemental::Element::Generic::Blank') }
-               $document->children->flatten;
+               @{ $document->children };
 
 is(@children, 4, "four top-level elements");
 
@@ -35,7 +34,7 @@ isa_ok($children[3], _pod5('Ordinary'), "...fourth element");
 {
   # first region contents
   my @children = grep { ! $_->isa('Pod::Elemental::Element::Generic::Blank') }
-                 $children[2]->children->flatten;
+                 @{ $children[2]->children };
 
   is(@children, 7, "top-level-contained region has five non-blanks");
 
@@ -50,7 +49,7 @@ isa_ok($children[3], _pod5('Ordinary'), "...fourth element");
   {
     # second region contents
     my @children = grep { ! $_->isa('Pod::Elemental::Element::Generic::Blank') }
-                   $children[5]->children->flatten;
+                   @{ $children[5]->children };
 
     is(@children, 1, "second-level-contained region has one non-blank");
 

@@ -45,8 +45,6 @@ options.
 
 =cut
 
-use Moose::Autobox 0.10;
-
 use namespace::autoclean;
 
 use Pod::Elemental::Document;
@@ -100,7 +98,7 @@ sub __extract_region {
       }
     }
 
-    @region_paras->push($region_para);
+    push @region_paras, $region_para;
   };
 
   return \@region_paras;
@@ -109,13 +107,13 @@ sub __extract_region {
 sub _upgrade_nonpod {
   my ($self, $in_paras) = @_;
 
-  $in_paras->each(sub {
-    my ($i, $para) = @_;
-    return unless $para->isa( $self->_gen_class('Nonpod') );
-    $in_paras->[ $i ] = $self->_class('Nonpod')->new({
-      content => $para->content,
-    });
-  });
+  $in_paras = [ map {
+    $_->isa( $self->_gen_class('Nonpod') )
+      ? $self->_class('Nonpod')->new({
+          content => $_->content,
+        })
+      : $_
+  } @$in_paras ];
 }
 
 sub _collect_regions {
@@ -126,8 +124,8 @@ sub _collect_regions {
   my $s_region = s_command([ qw(begin for) ]);
   my $region_class = $self->_class('Region');
 
-  PARA: while (my $para = $in_paras->shift) {
-    @out_paras->push($para), next PARA unless $s_region->($para);
+  PARA: while (my $para = shift @{ $in_paras }) {
+    push(@out_paras, $para), next PARA unless $s_region->($para);
 
     if ($para->command eq 'for') {
       # factor out (for vertical space if nothing else) -- rjbs, 2009-10-20
@@ -142,7 +140,7 @@ sub _collect_regions {
         content     => "\n",
       });
 
-      @out_paras->push($region);
+      push @out_paras, $region;
       next PARA;
     }
 
@@ -150,8 +148,8 @@ sub _collect_regions {
 
     my $region_paras = $self->__extract_region("$colon$target", $in_paras);
 
-    $region_paras->shift while s_blank($region_paras->[0]);
-    $region_paras->pop   while @$region_paras && s_blank($region_paras->[-1]);
+    shift @$region_paras while s_blank($region_paras->[0]);
+    pop @$region_paras   while @$region_paras && s_blank($region_paras->[-1]);
 
     my $region = $region_class->new({
       children    => $self->_collect_regions($region_paras),
@@ -160,7 +158,7 @@ sub _collect_regions {
       content     => $content,
     });
 
-    @out_paras->push($region);
+    push @out_paras, $region;
   }
 
   @$in_paras = @out_paras;
@@ -172,15 +170,14 @@ sub _strip_markers {
   my ($self, $in_paras) = @_;
 
   @$in_paras = grep { ! s_command([ qw(cut pod) ], $_) } @$in_paras;
-  $in_paras->shift while @$in_paras and s_blank($in_paras->[0]);
+  shift @$in_paras while @$in_paras and s_blank($in_paras->[0]);
 }
 
 sub _autotype_paras {
   my ($self, $paras, $is_pod) = @_;
 
-  $paras->each(sub {
-    my ($i, $elem) = @_;
-
+  @$paras = map {
+    my $elem = $_;
     if ($elem->isa( $self->_gen_class('Text') )) {
       my $class = $is_pod
                 ? $elem->content =~ /\A\s/
@@ -188,7 +185,7 @@ sub _autotype_paras {
                   : $self->_class('Ordinary')
                 : $self->_class('Data');
 
-      $paras->[ $i ] = $class->new({ content => $elem->content });
+      $elem = $class->new({ content => $elem->content });
     }
 
     if ($elem->isa( $self->_class('Region') )) {
@@ -196,12 +193,15 @@ sub _autotype_paras {
     }
 
     if ($elem->isa( $self->_gen_class('Command') )) {
-      $paras->[ $i ] = $self->_class('Command')->new({
+      $elem = $self->_class('Command')->new({
         command => $elem->command,
         content => $elem->content,
       });
     }
-  });
+
+    $elem;
+
+  } @$paras;
 }
 
 sub __text_class {
@@ -218,9 +218,8 @@ sub __text_class {
 sub _collect_runs {
   my ($self, $paras) = @_;
 
-  $paras->grep(sub { $_->isa( $self->_class('Region') ) })->each_value(sub {
-    $self->_collect_runs($_->children)
-  });
+  $self->_collect_runs($_->children)
+    foreach grep { $_->isa( $self->_class('Region') ) } @$paras;
 
   PASS: for my $start (0 .. $#$paras) {
     last PASS if $#$paras - $start < 2; # we need X..Blank..X at minimum
@@ -242,10 +241,9 @@ sub _collect_runs {
 
     next PASS unless @to_collect >= 3;
 
-    my $new_content = $paras
-                    ->slice(\@to_collect)
-                    ->map(sub { $_ = $_->content; chomp; $_ })
-                    ->join(qq{\n});
+    my $new_content = join(qq{\n},
+      map { $_ = $_->content; chomp; $_ } @$paras[@to_collect]
+    );
 
     splice @$paras, $start, scalar(@to_collect), $class->new({
       content => $new_content,

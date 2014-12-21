@@ -8,8 +8,6 @@ with 'Pod::Elemental::Autochomp';
 
 use namespace::autoclean;
 
-use Moose::Autobox 0.10;
-
 # BEGIN Autochomp Replacement
 use Pod::Elemental::Types qw(ChompedString);
 has '+content' => (coerce => 1, isa => ChompedString);
@@ -37,7 +35,7 @@ override as_pod_string => sub {
 
   $string = join q{},
     "$string\n\n",
-    $self->children->map(sub { $_->as_pod_string })->flatten;
+    map { $_->as_pod_string } @{ $self->children };
 
   $string =~ s/\n{3,}\z/\n\n/g;
 

@@ -5,7 +5,6 @@ use warnings;
 use Test::More;
 use Test::Differences;
 
-use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental;
 use Pod::Elemental::Selectors -all;
@@ -28,7 +27,7 @@ my $nester = Pod::Elemental::Transformer::Nester->new({
 
 $nester->transform_node($document);
 
-my @children = $document->children->flatten;
+my @children = @{ $document->children };
 
 is(@children, 3, "the nested document has 3 top-level elements"); 
 
@@ -40,7 +39,7 @@ ok(
 );
 
 {
-  my @children = $children[1]->children->flatten;
+  my @children = @{ $children[1]->children };
   is(@children, 7, "...which has 7 children");
 }
 
@@ -50,7 +49,7 @@ ok(
 );
 
 {
-  my @children = $children[2]->children->flatten;
+  my @children = @{ $children[2]->children };
   is(@children, 1, "...which has 1 child");
 }
 

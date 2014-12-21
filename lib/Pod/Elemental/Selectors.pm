@@ -34,7 +34,7 @@ Sub::Exporter.)
 
 =cut
 
-use Moose::Autobox 0.10;
+use List::Util 1.33 'any';
 
 use Sub::Exporter -setup => {
   exports => [ qw(s_blank s_flat s_node s_command) ],
@@ -53,7 +53,7 @@ C<s_blank> tests whether a paragraph is a Generic::Blank element.
 sub s_blank {
   my $code = sub {
     my $para = shift;
-    return $para->isa('Pod::Elemental::Element::Generic::Blank');
+    return $para && $para->isa('Pod::Elemental::Element::Generic::Blank');
   };
 
   return @_ ? $code->(@_) : $code;
@@ -73,7 +73,7 @@ words, is content-only.
 sub s_flat {
   my $code = sub {
     my $para = shift;
-    return $para->does('Pod::Elemental::Flat');
+    return $para && $para->does('Pod::Elemental::Flat');
   };
 
   return @_ ? $code->(@_) : $code;
@@ -93,7 +93,7 @@ words, whether it may have children.
 sub s_node {
   my $code = sub {
     my $para = shift;
-    return $para->does('Pod::Elemental::Node');
+    return $para && $para->does('Pod::Elemental::Node');
   };
 
   return @_ ? $code->(@_) : $code;
@@ -121,11 +121,11 @@ sub s_command {
 
   my $code = sub {
     my $para = shift;
-    return unless $para->does('Pod::Elemental::Command');
+    return unless $para && $para->does('Pod::Elemental::Command');
     return 1 unless defined $command;
 
     my $alts = ref $command ? $command : [ $command ];
-    return $para->command eq $alts->any;
+    return any { $para->command eq $_ } @$alts;
   };
 
   return @_ ? $code->(@_) : $code;
