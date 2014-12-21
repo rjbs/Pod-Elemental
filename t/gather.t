@@ -5,7 +5,6 @@ use warnings;
 use Test::More;
 use Test::Differences;
 
-use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental;
 use Pod::Elemental::Selectors -all;
@@ -38,11 +37,10 @@ my $gatherer = Pod::Elemental::Transformer::Gatherer->new({
 $nester->transform_node($document);
 $gatherer->transform_node($document);
 
-$gatherer->container->children->grep(s_command('method'))->each_value(sub {
-  $_->command('head2');
-});
+$_->command('head2')
+  foreach grep { s_command('method')->($_) } @{ $gatherer->container->children };
 
-my @children = $document->children->flatten;
+my @children = @{ $document->children };
 
 is(@children, 4, "the nested document has 4 top-level elements"); 
 
@@ -54,7 +52,7 @@ ok(
 );
 
 {
-  my @children = $children[1]->children->flatten;
+  my @children = @{ $children[1]->children };
   is(@children, 1, "...which has 1 child");
 }
 
@@ -64,11 +62,11 @@ ok(
 );
 
 {
-  my @children = $children[2]->children->flatten;
+  my @children = @{ $children[2]->children };
   is(@children, 2, "...which has 2 children");
 
   {
-    my @children = $children[0]->children->flatten;
+    my @children = @{ $children[0]->children };
     is(@children, 10, "...the first of which which has 10 children");
   }
 }
@@ -79,7 +77,7 @@ ok(
 );
 
 {
-  my @children = $children[3]->children->flatten;
+  my @children = @{ $children[3]->children };
   is(@children, 1, "...which has 1 child");
 }
 

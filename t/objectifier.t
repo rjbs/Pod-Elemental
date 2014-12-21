@@ -3,7 +3,6 @@ use warnings;
 use Test::More tests => 1;
 use Test::Deep;
 
-use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental::Objectifier;
 

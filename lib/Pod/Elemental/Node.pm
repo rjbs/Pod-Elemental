@@ -5,7 +5,6 @@ use Moose::Role;
 
 use namespace::autoclean;
 
-use Moose::Autobox;
 use MooseX::Types;
 use MooseX::Types::Moose qw(ArrayRef);
 use Moose::Util::TypeConstraints qw(class_type);
@@ -39,7 +38,7 @@ around as_debug_string => sub {
 
   my $str = $self->$orig;
 
-  my @children = map { $_->as_debug_string } $self->children->flatten;
+  my @children = map { $_->as_debug_string } @{ $self->children };
   s/^/  /sgm for @children;
 
   $str = join "\n", $str, @children;

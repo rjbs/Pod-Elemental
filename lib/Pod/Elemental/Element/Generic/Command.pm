@@ -5,8 +5,6 @@ use Moose;
 
 use namespace::autoclean;
 
-use Moose::Autobox;
-
 =head1 OVERVIEW
 
 Generic::Command elements are paragraph elements implementing the

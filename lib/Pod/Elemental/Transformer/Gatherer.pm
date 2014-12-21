@@ -6,7 +6,6 @@ with 'Pod::Elemental::Transformer';
 
 use namespace::autoclean;
 
-use Moose::Autobox 0.10;
 use MooseX::Types::Moose qw(CodeRef);
 use Pod::Elemental::Node;
 
@@ -93,7 +92,7 @@ sub transform_node {
   my ($self, $node) = @_;
 
   my @indexes;
-  for my $i (0 .. $node->children->length - 1) {
+  for my $i (0 .. @{ $node->children } - 1) {
     push @indexes, $i if $self->gather_selector->($node->children->[ $i ]);
   }
 

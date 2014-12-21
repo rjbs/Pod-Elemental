@@ -2,7 +2,6 @@ package Pod::Elemental::Objectifier;
 # ABSTRACT: it turns a Pod::Eventual event stream into objects
 
 use Moose;
-use Moose::Autobox;
 
 =head1 OVERVIEW
 
@@ -33,7 +32,7 @@ formed from the event stream.
 
 sub objectify_events {
   my ($self, $events) = @_;
-  return $events->map(sub {
+  return [ map {
     Carp::croak("not a valid event") unless ref $_;
 
     my $class = $self->element_class_for_event($_);
@@ -46,7 +45,7 @@ sub objectify_events {
     );
 
     $class->new(\%guts);
-  });
+  } @$events ];
 }
 
 

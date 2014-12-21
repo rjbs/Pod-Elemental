@@ -15,8 +15,6 @@ an attribute, but this is not necessary.
 
 =cut
 
-use Moose::Autobox;
-
 requires 'command';
 
 sub as_pod_string {

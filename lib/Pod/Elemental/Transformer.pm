@@ -2,7 +2,6 @@ package Pod::Elemental::Transformer;
 # ABSTRACT: something that transforms a node tree into a new tree
 
 use Moose::Role;
-use Moose::Autobox;
 
 use namespace::autoclean;
 
