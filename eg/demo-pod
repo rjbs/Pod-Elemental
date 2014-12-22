@@ -2,7 +2,6 @@
 use strict;
 use warnings;
 
-use Moose::Autobox;
 use Pod::Eventual::Simple;
 use Pod::Elemental;
 use Pod::Elemental::Selectors -all;
@@ -51,9 +50,8 @@ $gatherer->transform_node($document);
 print "## AFTER GATHERING METHOD ELEMENTS UNDER CONTAINER:\n\n";
 print $document->as_debug_string, "\n\n";
 
-$gatherer->container->children->grep(s_command('method'))->each_value(sub {
-  $_->command('head2');
-});
+$_->command('head2')
+  foreach grep { s_command('method', $_) } @{ $gatherer->container->children };
 
 print "## AFTER TRANSFORMING METHOD ELEMENTS TO HEAD2:\n\n";
 print $document->as_debug_string, "\n\n";

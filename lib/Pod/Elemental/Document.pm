@@ -5,7 +5,6 @@ use Moose;
 with 'Pod::Elemental::Node';
 
 use Class::Load ();
-use Moose::Autobox;
 use namespace::autoclean;
 
 use Pod::Elemental::Element::Generic::Blank;
@@ -36,7 +35,7 @@ sub _expand_name {
 sub as_pod_string {
   my ($self) = @_;
 
-  my $str = join q{}, $self->children->map(sub { $_->as_pod_string })->flatten;
+  my $str = join q{}, map { $_->as_pod_string } @{ $self->children };
 
   $str = "=pod\n\n$str" unless $str =~ /\A=pod\n/;
   $str .= "=cut\n" unless $str =~ /=cut\n+\z/;

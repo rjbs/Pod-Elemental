@@ -3,7 +3,6 @@ package Pod::Elemental::Paragraph;
 
 use namespace::autoclean;
 use Moose::Role;
-use Moose::Autobox;
 
 use Encode qw(encode);
 use String::Truncate qw(elide);
