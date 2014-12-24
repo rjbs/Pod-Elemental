@@ -2,6 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.103003  2014-12-23 21:11:26-05:00 America/New_York
+        - remove use of Moose::Autobox
+
 0.103002  2014-10-27 21:12:54-04:00 America/New_York
         - make classes immutable to improve runtime speed
 
