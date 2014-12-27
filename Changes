@@ -2,6 +2,10 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.103004  2014-12-26 22:31:16-05:00 America/New_York
+        - fix a regression in 0.103003, in which Nonpod paragraphs were not
+          converted into Pod5::Nonpod paragraphs by the Pod5 transformer
+
 0.103003  2014-12-23 21:11:26-05:00 America/New_York
         - remove use of Moose::Autobox
 
