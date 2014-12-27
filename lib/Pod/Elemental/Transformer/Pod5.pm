@@ -107,13 +107,13 @@ sub __extract_region {
 sub _upgrade_nonpod {
   my ($self, $in_paras) = @_;
 
-  $in_paras = [ map {
+  @$in_paras = map {
     $_->isa( $self->_gen_class('Nonpod') )
       ? $self->_class('Nonpod')->new({
           content => $_->content,
         })
       : $_
-  } @$in_paras ];
+  } @$in_paras;
 }
 
 sub _collect_regions {
