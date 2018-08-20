@@ -30,7 +30,7 @@ described here:
 
 =item * non-data paragraphs that start with spaces are "verbatim" paragraphs
 
-=item * groups of data or verbatim paragraphs can be consolodated
+=item * groups of data or verbatim paragraphs can be consolidated
 
 =back
 
