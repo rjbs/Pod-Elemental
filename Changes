@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.103005  2020-01-25 15:53:25-05:00 America/New_York
         - fix a typo in documentation (thanks, BooK!)
 
 0.103004  2014-12-26 22:31:16-05:00 America/New_York
