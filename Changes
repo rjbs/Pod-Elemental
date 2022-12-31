@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - update packaging and metadata
+        - minimum required Perl is now v5.12
 
 0.103005  2020-01-25 15:53:25-05:00 America/New_York
         - fix a typo in documentation (thanks, BooK!)
